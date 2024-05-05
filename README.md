@@ -35,3 +35,19 @@ Also if you find any bug or have a suggestion, feel free to open an issue and i'
 <p align="center"><img src="img/doc/pyamp_full.png" alt="pyamp"></p>
 <p align="center"><img src="img/doc/kek.png" alt="pyamp"></p>
 <h3 align="center">Installation</h3>
+
+Just clone the repo anywhere with git and cd into the cloned directory:<br>
+``` Bash
+$	git clone https://github.com/themidnightmaniac/pyamp.git
+$	cd pyamp
+```
+Then make install.sh executable and run it:
+``` Bash
+$	chmod +x install.sh
+$	./install.sh
+```
+Now ur good to go, just run:
+``` Bash
+$	pyamp
+```
+and happy listening!
