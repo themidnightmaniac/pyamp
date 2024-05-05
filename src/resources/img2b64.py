@@ -17,6 +17,7 @@ import os
 import base64
 
 
+# Converts images to base 64
 def image_to_base64(image_path):
     # Read the image file in binary mode
     with open(image_path, 'rb') as f:
@@ -28,6 +29,7 @@ def image_to_base64(image_path):
     return base64_string
 
 
+# Writes image string to file
 def convert_images_to_base64(directory, output_file):
     # Open the output file in write mode
     with open(output_file, 'w') as f:
