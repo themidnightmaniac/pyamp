@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+from __version__ import __version__
 
 
 with open('requirements.txt') as f:
@@ -6,7 +7,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='Pyamp',
-    version='1.0.0',
+    version=__version__,
     package_dir={'': 'src/'},
     packages=find_packages(where='src/'),
     install_requires=requirements,
@@ -23,8 +24,6 @@ setup(
         'Operating System :: POSIX :: Linux',
     ],
     entry_points={
-        'console_scripts': [
-            'pyamp = pyamp.main:main',
-        ],
+        'console_scripts': ['pyamp = pyamp.main:main'],
     },
 )

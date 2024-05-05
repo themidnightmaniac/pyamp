@@ -14,14 +14,16 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QProgressBar, QGridLayout, QSlider, QSizePolicy, QHBoxLayout, QLabel, QVBoxLayout
-from PySide6.QtGui import QPixmap, QPainter, QFont, QIcon
+from PySide6.QtGui import QPixmap, QPainter, QFont, QIcon, QImage
 from time import strftime, localtime
 from PySide6.QtCore import QTimer, Qt, Signal
 import subprocess
+import base64
 from pyamp.song_picker import SongPickerWindow
 from pyamp.album_cover import AlbumCoverWindow
 from pyamp.ui import createTitleBar, NonSelectableLineEdit, CreateSpacer
 from pyamp.config import ConfigManager
+from pyamp.images import background, next, prev, toggle, album, stop, add
 
 
 # Main window
@@ -39,8 +41,15 @@ class MainWindow(QMainWindow):
         self.setFixedSize(self.size())
 
         # Window background and alpha channel
-        image_path = "src/resources/images/background.png"
-        self.background_image = QPixmap(image_path)
+        # Decode the base64 image data
+        background_data = base64.b64decode(background)
+
+        # Create a QPixmap from the binary data
+        background_pixmap = QPixmap()
+        background_pixmap.loadFromData(background_data)
+
+        # Set the background image and mask
+        self.background_image = background_pixmap
         self.setMask(self.background_image.mask())
 
         # Config file
@@ -82,7 +91,7 @@ class MainWindow(QMainWindow):
         self.layout.addItem(self.spacer2, 1, 3, 2, 1)
 
         # Title bar
-        self.title_bar = createTitleBar(self, "Pyamp 1.0", button=True)
+        self.title_bar = createTitleBar(self, "Pyamp 0.1.1", button=True)
         self.setMenuWidget(self.title_bar)
 
         # Containers
@@ -223,7 +232,8 @@ class MainWindow(QMainWindow):
         """
 
         # Previous song button
-        prev_icon = QIcon("src/resources/images/icon/prev.png")
+        # prev_icon = QIcon("src/resources/images/icon/prev.png")
+        prev_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(prev))))
         self.prev = QPushButton("", self)
         self.prev.setFixedHeight(25)
         self.prev.setFixedWidth(25)
@@ -233,7 +243,8 @@ class MainWindow(QMainWindow):
         self.prev.clicked.connect(self.on_prev_press)
 
         # Stop button
-        stop_icon = QIcon("src/resources/images/icon/stop.png")
+        # stop_icon = QIcon("src/resources/images/icon/stop.png")
+        stop_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(stop))))
         self.stop = QPushButton("", self)
         self.stop.setFixedHeight(25)
         self.stop.setFixedWidth(25)
@@ -243,7 +254,8 @@ class MainWindow(QMainWindow):
         self.stop.clicked.connect(self.on_stop_press)
 
         # Play/Pause button
-        toggle_icon = QIcon("src/resources/images/icon/toggle.png")
+        toggle_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(toggle))))
+        # toggle_icon = QIcon("src/resources/images/icon/toggle.png")
         self.toggle = QPushButton("", self)
         self.toggle.setCheckable(True)
         self.toggle.setFixedHeight(25)
@@ -254,7 +266,8 @@ class MainWindow(QMainWindow):
         self.toggle.clicked.connect(self.on_play_toggle)
 
         # Song picker button
-        add_icon = QIcon("src/resources/images/icon/add.png")
+        # add_icon = QIcon("src/resources/images/icon/add.png")
+        add_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(add))))
         self.add = QPushButton("", self)
         self.add.setFixedHeight(25)
         self.add.setFixedWidth(25)
@@ -265,7 +278,8 @@ class MainWindow(QMainWindow):
         self.add.clicked.connect(self.open_song_picker)
 
         # Next song button
-        next_icon = QIcon("src/resources/images/icon/next.png")
+        # next_icon = QIcon("src/resources/images/icon/next.png")
+        next_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(next))))
         self.next = QPushButton("", self)
         self.next.setFixedHeight(25)
         self.next.setFixedWidth(25)
@@ -275,7 +289,8 @@ class MainWindow(QMainWindow):
         self.next.clicked.connect(self.on_next_press)
 
         # Album art button
-        album_icon = QIcon("src/resources/images/icon/album.png")
+        # album_icon = QIcon("src/resources/images/icon/album.png")
+        album_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(album))))
         self.album = QPushButton("", self)
         self.album.setFixedHeight(25)
         self.album.setFixedWidth(25)

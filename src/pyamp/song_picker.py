@@ -16,8 +16,9 @@
 from PySide6.QtWidgets import QMainWindow, QLineEdit, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QListWidgetItem, QListWidget, QAbstractItemView
 from PySide6.QtGui import QPixmap, QPainter
 from PySide6.QtCore import Qt, Signal
-
+import base64
 from pyamp.ui import createTitleBar
+from pyamp.images import song_picker_background
 
 
 class SongItem(QListWidgetItem):
@@ -37,9 +38,16 @@ class SongPickerWindow(QMainWindow):
         self.setGeometry(0, 0, 410, 770)
         self.setFixedSize(self.size())
 
-        # Window background and alpha
-        image_path = "src/resources/images/song_picker_background"
-        self.background_image = QPixmap(image_path)
+        # Window background and alpha channel
+        # Decode the base64 image data
+        background_data = base64.b64decode(song_picker_background)
+
+        # Create a QPixmap from the binary data
+        background_pixmap = QPixmap()
+        background_pixmap.loadFromData(background_data)
+
+        # Set the background image and mask
+        self.background_image = background_pixmap
         self.setMask(self.background_image.mask())
 
         # Layout and central widget
