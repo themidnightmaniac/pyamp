@@ -1,4 +1,4 @@
-<h3 align="center"><img src="img/doc/pyamp_logo_scaled.png" width="500px" style="image-rendering: pixelated;" alt="pyamp logo"></h3>
+<h3 align="center"><img src="img/doc/pyamp_logo_scaled.png" width="700px" alt="pyamp logo"></h3>
 <h3 align="center">Minimal Python MPD Client</h3>
 
 <img src="img/doc/pyamp_main1.png" alt="main window" width="400px" align="right" style="image-rendering: pixelated;">
