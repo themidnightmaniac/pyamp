@@ -16,6 +16,10 @@ if [ -z "$WRAPPER_PATH" ]; then
     echo "Error, make sure there's a valid path in your \$PATH"
     exit 1
 fi
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Creating virtual environment..."
+    python -m venv "$VENV_DIR"
+fi
 WRAPPER_SCRIPT=$WRAPPER_PATH
 source "${VENV_DIR}/bin/activate"
 pip install .
