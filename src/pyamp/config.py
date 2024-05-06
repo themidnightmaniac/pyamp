@@ -62,4 +62,11 @@ class ConfigManager:
     # Extract value from config file using its key
     def get_value(self, key):
         config_data = self.load_config()
-        return config_data.get(key, self.default_config.get(key))
+        # Returns a list if key is song_format
+        # This ensures the value isn't returned empty or overwritten with the default
+        # if the user changes it [value].
+        # I love lasagna
+        if key == 'song_format':
+            return config_data.get(key, self.default_config[key]) or self.default_config[key]
+        else:
+            return config_data.get(key, self.default_config.get(key))
