@@ -13,21 +13,34 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QProgressBar, QGridLayout, QSlider, QSizePolicy, QHBoxLayout, QLabel, QVBoxLayout
-from PySide6.QtGui import QPixmap, QPainter, QFont, QIcon, QImage
-from time import strftime, localtime
-from PySide6.QtCore import QTimer, Qt, Signal
 import subprocess
+from time import strftime, localtime
 import base64
+from PySide6.QtWidgets import ( # pylint: disable=E0611
+    QApplication,
+    QMainWindow,
+    QWidget,
+    QPushButton,
+    QProgressBar,
+    QGridLayout,
+    QSlider,
+    QSizePolicy,
+    QHBoxLayout,
+    QLabel,
+    QVBoxLayout
+)
+from PySide6.QtGui import QPixmap, QPainter, QFont, QIcon, QImage # pylint: disable=E0611
+from PySide6.QtCore import QTimer, Qt, Signal # pylint: disable=E0611
 from pyamp.song_picker import SongPickerWindow
 from pyamp.album_cover import AlbumCoverWindow
 from pyamp.ui import createTitleBar, NonSelectableLineEdit, CreateSpacer
 from pyamp.config import ConfigManager
-from pyamp.images import background, next, prev, toggle, album, stop, add
-
+from pyamp.images import background, next, prev, toggle, album, stop, add # pylint: disable=W0622
+# Make this uppercase you fucking stupid ^^^
 
 # Main window
 class MainWindow(QMainWindow):
+    '''Defines the main window'''
     # Define the song changed signal for the album cover display
     songChanged = Signal()
 
@@ -62,14 +75,24 @@ class MainWindow(QMainWindow):
         self.mpd_status = self.client.status()
         self.playstate = ""
         self.songs_played = 0
+        self.current_song = ''
+        self.current_song_title = ''
+        self.current_artist = ''
+        self.current_album = ''
         if not self.song_order:
             self.song_format = "{playstate} {title} - {artist} - {album}"
             print("Song format is empty, falling back to the default format")
         else:
             try:
-                self.song_format = "{playstate} " + " - ".join(["{" + item + "}" for item in self.song_order])
+                self.song_format = "{playstate} " + " - ".join(
+                    ["{" + item + "}" for item in self.song_order]
+                    )
             except Exception as e:
-                print(f"An error occurred while reading the song format from the config file: {e}. Falling back to the default format")
+                print(
+                    f"An error occurred while reading the song format from the config file: "
+                    f"{e}. Falling back to the default format"
+                )
+
                 self.song_format = "{playstate} {title} - {artist} - {album}"
         self.current_time = strftime("%H:%M")
 
@@ -153,6 +176,7 @@ class MainWindow(QMainWindow):
         # Timer to scroll the current song text
         self.scroll_timer = QTimer(self)
         self.scroll_timer.timeout.connect(self.scroll_text)
+        self.delay_active = None
 
         # Progress bar
         self.progress_bar = QProgressBar(central_widget)
@@ -308,8 +332,8 @@ class MainWindow(QMainWindow):
         # Skibidi rizz
         self.startup()
 
-    # Functions
     def startup(self):
+        '''Runs/Starts all the music related functions'''
         # Checks mpd status
         if self.mpd_status.get("state") == "play":
             # Sets status and button to "play"
@@ -329,8 +353,8 @@ class MainWindow(QMainWindow):
         self.update_clock_timer()
         self.clock_timer.start()
 
-    # Song change check
     def check_song_change(self):
+        '''Checks for a song change and runs additional functions if it detects one'''
         # Temp for user command
         try:
             # Check for song change
@@ -344,7 +368,8 @@ class MainWindow(QMainWindow):
                 if self.user_command:
                     try:
                         global subprocess_instance
-                        subprocess_instance = subprocess.Popen(self.user_command.split())
+                        with subprocess.Popen(self.user_command.split()) as subprocess_instance:
+                            subprocess_instance.communicate()
                     except Exception as e:
                         print("An error ocurred while running the custom command: ", e)
 
@@ -362,15 +387,13 @@ class MainWindow(QMainWindow):
             print("Connection error:", e)
             self.close_pyamp()
 
-    # Song info and current song variables
     def get_current_song_info(self):
+        '''Gets all the current song info'''
         try:
             status = self.client.status()
             if status.get("state") == "stop":
                 # Sets the current song variable
                 self.current_song = "Not Playing!"
-                # Returns the current song variable
-                return self.current_song
             else:
                 # Fetches MPD's current song info
                 current_song_info = self.client.currentsong()
@@ -388,14 +411,15 @@ class MainWindow(QMainWindow):
                     album=self.current_album,
                 )
 
-                # Returns the current song variable
-                return self.current_song
+            # Returns the current song variable
+            return self.current_song
         except Exception as e:
             print(f"An error occurred while getting current song info: {e}")
             return None
 
     # Updates the song display and text scroll
     def song_changed(self):
+        '''Updates the current song and sets the song display to display it.'''
         state = self.mpd_status.get("state")
         if state in ["play", "pause", "stop"]:
             self.current_song = self.get_current_song_info()
@@ -405,9 +429,11 @@ class MainWindow(QMainWindow):
             self.current_song = "Not Playing!"
             self.song_display.setText(self.current_song)
             self.song_display.setCursorPosition(0)
+            # Redundant code ^^^
 
     # Volume slider
     def volume_changed(self, value):
+        '''Changes mpd's volume if the volume slider is changed'''
         try:
             self.client.setvol(value)
         except Exception as e:
@@ -415,17 +441,23 @@ class MainWindow(QMainWindow):
 
     # Progress bar
     def update_progress(self):
+        '''Updates the progress bar'''
         status = self.client.status()
         if "time" in status:
             current_time, total_time = map(int, status["time"].split(":"))
             progress = int((current_time / total_time) * 100)
             self.progress_bar.setValue(progress)
-            self.progress_bar.setFormat(f"{strftime('%M:%S', localtime(current_time))} / {strftime('%M:%S', localtime(total_time))}")
+            self.progress_bar.setFormat(
+                f"{strftime(
+                    '%M:%S', localtime(current_time))} / {strftime('%M:%S', localtime(total_time)
+                    )}"
+                )
         else:
             self.progress_bar.setValue(0)
 
     # Text scroll
     def scroll_text(self):
+        '''Scrolls song display text'''
         try:
             cursor_position = self.song_display.cursorPosition()
             if cursor_position == len(self.current_song):
@@ -438,11 +470,13 @@ class MainWindow(QMainWindow):
             print("There was an error scrolling the text: ", e)
 
     def reset_cursor(self):
+        '''Resets the cursor to the start of the line'''
         self.delay_active = False
         self.song_display.setCursorPosition(0)
 
     # Buttons
     def on_play_toggle(self, checked):
+        '''Alters the play state based on self.play check state'''
         if checked:
             self.playstate = "Playing:"
             self.client.play()
@@ -453,6 +487,7 @@ class MainWindow(QMainWindow):
             self.song_changed()
 
     def on_next_press(self):
+        '''Skips song and changes play state'''
         try:
             self.client.next()
             # Sets the playstate and button to "play"
@@ -463,6 +498,7 @@ class MainWindow(QMainWindow):
             print("An error occurred while executing next song command:", e)
 
     def on_prev_press(self):
+        '''Rewinds song and changes play state'''
         try:
             self.client.previous()
             # Sets the playstate and button to "play"
@@ -473,11 +509,13 @@ class MainWindow(QMainWindow):
             print("An error occurred while executing previous song command:", e)
 
     def on_stop_press(self):
+        '''Stops music and changes display text'''
         self.client.stop()
         self.song_display.setText("Not Playing!")
         self.toggle.setChecked(False)
 
-    def closeEvent(self, event):
+    def closeEvent(self, event): # pylint: disable=invalid-name,unused-argument
+        ''''Re-defines closeEvent to properly close the program'''
         # Closes custom command ran by user if it is still open
         if subprocess_instance and subprocess_instance.poll() is None:
             subprocess_instance.terminate()
@@ -491,31 +529,33 @@ class MainWindow(QMainWindow):
         self.clock_timer.stop()
         self.check_song_change_timer.stop()
         # Quits qt
-        qApp.quit()  # noqa: F821
+        qApp.quit()  # pylint: disable=undefined-variable
 
     def open_song_picker(self):
+        '''Opens the song picker'''
         self.song_picker_window.clear_selection()
         self.song_picker_window.show()
         self.song_picker_window.window_close.connect(self.song_changed)
 
-    def open_album_display(self, mpd_manager):
+    def open_album_display(self):
+        '''Opens the album display'''
         self.album_display.show()
 
-    # This makes sure the clock_update func is ran every real 60 seconds (or 30, this shit is broken)
     def update_clock_timer(self):
+        '''Runs clock update every minute'''
         # Gets the current time
         current_time = localtime()
         # Calculate remaining seconds until next minute
         remaining_seconds = 60 - current_time.tm_sec
         self.clock_timer.setInterval(remaining_seconds * 1000)
 
-    # This updates the clock display
     def clock_update(self):
+        '''Updates the clock'''
         self.current_time = strftime("%H:%M")
         self.clock_display.setText(self.current_time)
 
-    # This makes sure the background image doesn't get overwritten or something idk
-    def paintEvent(self, event):
+    def paintEvent(self, event): # pylint: disable=invalid-name,unused-argument
+        '''Re-defines the painEvent so the background image actually displays'''
         painter = QPainter(self)
         painter.drawPixmap(self.rect(), self.background_image)
         self.delay_active = False
