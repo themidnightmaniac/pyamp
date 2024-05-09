@@ -13,27 +13,40 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from PySide6.QtWidgets import QLineEdit, QWidget, QPushButton, QHBoxLayout, QLabel, QSpacerItem, QSizePolicy
+from PySide6.QtWidgets import (
+    QLineEdit,
+    QWidget,
+    QPushButton,
+    QHBoxLayout,
+    QLabel,
+    QSpacerItem,
+    QSizePolicy
+)
 from PySide6.QtCore import Qt
 
 
 class CreateSpacer(QSpacerItem):
-    def __init__(self, width, height, size_policy_horizontal, size_policy_vertical):
+    '''Creates a spacer item'''
+    def __init__(self, width, height, size_policy_horizontal, size_policy_vertical): # pylint: disable=W0246
         super().__init__(width, height, size_policy_horizontal, size_policy_vertical)
 
 
 class NonSelectableLineEdit(QLineEdit):
-    def __init__(self, *args, **kwargs):
+    '''Creates a non selectable textbox'''
+    def __init__(self, *args, **kwargs): # pylint: disable=W0246
         super().__init__(*args, **kwargs)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event): # pylint: disable=C0103
+        '''Redefines the mouse press event so nothing happens when clicked'''
         event.ignore()
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event): # pylint: disable=C0103
+        '''Redefines the mouse move event so nothing happens when the cursor is moved'''
         event.ignore()
 
 
-class createTitleBar(QWidget):
+class createTitleBar(QWidget): # pylint: disable=C0103
+    '''Creates a title bar'''
     def __init__(self, parent, title, button=True):
         super().__init__(parent)
         self.title = title
@@ -41,6 +54,7 @@ class createTitleBar(QWidget):
         self.init_ui()
 
     def init_ui(self):
+        '''Creates the title bar'''
         title_bar_layout = QHBoxLayout(self)
         title_bar_layout.setContentsMargins(5, 4, 5, 0)
 

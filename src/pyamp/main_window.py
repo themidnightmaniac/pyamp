@@ -16,7 +16,7 @@
 import subprocess
 from time import strftime, localtime
 import base64
-from PySide6.QtWidgets import ( # pylint: disable=E0611
+from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
     QWidget,
@@ -29,14 +29,14 @@ from PySide6.QtWidgets import ( # pylint: disable=E0611
     QLabel,
     QVBoxLayout
 )
-from PySide6.QtGui import QPixmap, QPainter, QFont, QIcon, QImage # pylint: disable=E0611
-from PySide6.QtCore import QTimer, Qt, Signal # pylint: disable=E0611
+from PySide6.QtGui import QPixmap, QPainter, QFont, QIcon, QImage
+from PySide6.QtCore import QTimer, Qt, Signal
 from pyamp.song_picker import SongPickerWindow
 from pyamp.album_cover import AlbumCoverWindow
 from pyamp.ui import createTitleBar, NonSelectableLineEdit, CreateSpacer
 from pyamp.config import ConfigManager
-from pyamp.images import background, next, prev, toggle, album, stop, add # pylint: disable=W0622
-# Make this uppercase you fucking stupid ^^^
+from pyamp.images import BACKGROUND, NEXT, PREV, TOGGLE, ALBUM, STOP, ADD
+
 
 # Main window
 class MainWindow(QMainWindow):
@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
 
         # Window background and alpha channel
         # Decode the base64 image data
-        background_data = base64.b64decode(background)
+        background_data = base64.b64decode(BACKGROUND)
 
         # Create a QPixmap from the binary data
         background_pixmap = QPixmap()
@@ -256,8 +256,7 @@ class MainWindow(QMainWindow):
         """
 
         # Previous song button
-        # prev_icon = QIcon("src/resources/images/icon/prev.png")
-        prev_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(prev))))
+        prev_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(PREV))))
         self.prev = QPushButton("", self)
         self.prev.setFixedHeight(25)
         self.prev.setFixedWidth(25)
@@ -267,8 +266,7 @@ class MainWindow(QMainWindow):
         self.prev.clicked.connect(self.on_prev_press)
 
         # Stop button
-        # stop_icon = QIcon("src/resources/images/icon/stop.png")
-        stop_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(stop))))
+        stop_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(STOP))))
         self.stop = QPushButton("", self)
         self.stop.setFixedHeight(25)
         self.stop.setFixedWidth(25)
@@ -278,8 +276,7 @@ class MainWindow(QMainWindow):
         self.stop.clicked.connect(self.on_stop_press)
 
         # Play/Pause button
-        toggle_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(toggle))))
-        # toggle_icon = QIcon("src/resources/images/icon/toggle.png")
+        toggle_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(TOGGLE))))
         self.toggle = QPushButton("", self)
         self.toggle.setCheckable(True)
         self.toggle.setFixedHeight(25)
@@ -290,8 +287,7 @@ class MainWindow(QMainWindow):
         self.toggle.clicked.connect(self.on_play_toggle)
 
         # Song picker button
-        # add_icon = QIcon("src/resources/images/icon/add.png")
-        add_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(add))))
+        add_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(ADD))))
         self.add = QPushButton("", self)
         self.add.setFixedHeight(25)
         self.add.setFixedWidth(25)
@@ -302,8 +298,7 @@ class MainWindow(QMainWindow):
         self.add.clicked.connect(self.open_song_picker)
 
         # Next song button
-        # next_icon = QIcon("src/resources/images/icon/next.png")
-        next_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(next))))
+        next_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(NEXT))))
         self.next = QPushButton("", self)
         self.next.setFixedHeight(25)
         self.next.setFixedWidth(25)
@@ -313,8 +308,7 @@ class MainWindow(QMainWindow):
         self.next.clicked.connect(self.on_next_press)
 
         # Album art button
-        # album_icon = QIcon("src/resources/images/icon/album.png")
-        album_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(album))))
+        album_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(ALBUM))))
         self.album = QPushButton("", self)
         self.album.setFixedHeight(25)
         self.album.setFixedWidth(25)
@@ -355,7 +349,6 @@ class MainWindow(QMainWindow):
 
     def check_song_change(self):
         '''Checks for a song change and runs additional functions if it detects one'''
-        # Temp for user command
         try:
             # Check for song change
             current_song = self.client.currentsong()
@@ -364,7 +357,7 @@ class MainWindow(QMainWindow):
                 self.previous_song = current_song
                 self.songChanged.emit()
 
-                # Runs the user's custom command
+                # Runs run_on_song_change command if there's one
                 if self.user_command:
                     try:
                         global subprocess_instance
@@ -385,7 +378,7 @@ class MainWindow(QMainWindow):
 
         except Exception as e:
             print("Connection error:", e)
-            self.close_pyamp()
+            self.close()
 
     def get_current_song_info(self):
         '''Gets all the current song info'''
@@ -417,9 +410,8 @@ class MainWindow(QMainWindow):
             print(f"An error occurred while getting current song info: {e}")
             return None
 
-    # Updates the song display and text scroll
     def song_changed(self):
-        '''Updates the current song and sets the song display to display it.'''
+        '''Updates the current song and displays it.'''
         state = self.mpd_status.get("state")
         if state in ["play", "pause", "stop"]:
             self.current_song = self.get_current_song_info()
@@ -431,7 +423,6 @@ class MainWindow(QMainWindow):
             self.song_display.setCursorPosition(0)
             # Redundant code ^^^
 
-    # Volume slider
     def volume_changed(self, value):
         '''Changes mpd's volume if the volume slider is changed'''
         try:
@@ -439,7 +430,6 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print(f"An error occurred while setting the volume: {e}")
 
-    # Progress bar
     def update_progress(self):
         '''Updates the progress bar'''
         status = self.client.status()
@@ -455,7 +445,6 @@ class MainWindow(QMainWindow):
         else:
             self.progress_bar.setValue(0)
 
-    # Text scroll
     def scroll_text(self):
         '''Scrolls song display text'''
         try:

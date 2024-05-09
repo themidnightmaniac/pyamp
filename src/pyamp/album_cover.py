@@ -13,17 +13,17 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from mutagen import File
-from PIL import Image, ImageQt
 import io
 import os
+from mutagen import File
+from PIL import Image, ImageQt
 from PySide6.QtWidgets import QLabel, QMainWindow, QVBoxLayout, QWidget
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 
 
-# Album cover display window
 class AlbumCoverWindow(QMainWindow):
+    '''Creates a window, displaying the current song's album cover art'''
     def __init__(self, mpd_manager, main_window):
         super().__init__()
 
@@ -46,21 +46,19 @@ class AlbumCoverWindow(QMainWindow):
         # Connect the songChanged signal to the update_album_art slot
         main_window.songChanged.connect(self.update_album_art)
 
-    # This func joins the $MUSIC_DIR path with the current song uri
     def join_path(self):
+        '''Joins the $MUSIC_DIR environment variable with the current song's uri'''
         # Gets the current song uri from mpd
         current_song_info = self.client.currentsong()
         song_uri = current_song_info.get("file")
         # Gets the $MUSIC_DIR env variable
         music_dir = os.environ.get("MUSIC_DIR")
-        if not song_uri or not music_dir:
-            return
-        else:
+        if song_uri or music_dir:
             absolute_song_path = os.path.join(music_dir, song_uri)
-            return absolute_song_path
+        return absolute_song_path
 
-    # This func extracts the album art from the audio file
     def extract_album_art(self, file):
+        '''Extracts the album art from the current song's file metadata'''
         try:
             # Open the audio file
             audio = File(file)
@@ -73,16 +71,16 @@ class AlbumCoverWindow(QMainWindow):
                 # Convert PIL Image to QPixmap
                 image = QPixmap.fromImage(ImageQt.ImageQt(pil_image))
                 print("Album art found.")
-                return image
             else:
                 print("No album art found.")
-                return None
+                image = None
+            return image
         except Exception as e:
             print(f"Error: {e}. MPD probably isn't playing.")
             return None
 
-    # This func displays the album art
     def update_album_art(self):
+        '''Displays the album art'''
         # Get the absolute path of the currently playing song
         absolute_song_path = self.join_path()
 
@@ -106,7 +104,7 @@ class AlbumCoverWindow(QMainWindow):
             label.setAlignment(Qt.AlignCenter)
             layout.addWidget(label)
 
-    # Close the window on q or escape press
-    def keyPressEvent(self, event):
+    def keyPressEvent(self, event): # pylint: disable=C0103
+        '''Closes the window on q or escape key press'''
         if event.key() == Qt.Key_Q or event.key() == Qt.Key_Escape:
             self.close()
