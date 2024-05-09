@@ -53,12 +53,15 @@ class AlbumCoverWindow(QMainWindow):
         song_uri = current_song_info.get("file")
         # Gets the $MUSIC_DIR env variable
         music_dir = os.environ.get("MUSIC_DIR")
-        if song_uri or music_dir:
+        if song_uri and music_dir:
             absolute_song_path = os.path.join(music_dir, song_uri)
+        else:
+            absolute_song_path = None
         return absolute_song_path
 
     def extract_album_art(self, file):
         '''Extracts the album art from the current song's file metadata'''
+        check = 0
         try:
             # Open the audio file
             audio = File(file)

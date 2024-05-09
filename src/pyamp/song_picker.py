@@ -28,7 +28,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QPixmap, QPainter
 from PySide6.QtCore import Qt, Signal
 from pyamp.ui import createTitleBar
-from pyamp.images import song_picker_background
+from pyamp.images import SONG_PICKER_BACKGROUND
 
 
 class SongItem(QListWidgetItem):
@@ -52,7 +52,7 @@ class SongPickerWindow(QMainWindow):
 
         # Window background and alpha channel
         # Decode the base64 image data
-        background_data = base64.b64decode(song_picker_background)
+        background_data = base64.b64decode(SONG_PICKER_BACKGROUND)
 
         # Create a QPixmap from the binary data
         background_pixmap = QPixmap()
