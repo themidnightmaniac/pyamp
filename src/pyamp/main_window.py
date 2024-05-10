@@ -223,10 +223,8 @@ class MainWindow(QMainWindow):
 """)
         self.volume_slider.setRange(0, 100)
         self.volume_slider.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        if self.mpd_status.get("state") != "stop":
-            self.volume_slider.setValue(int(self.client.status()["volume"]))
-        else:
-            self.volume_slider.setValue(50)
+        mpd_volume = self.get_slider_value()
+        self.volume_slider.setValue(mpd_volume)
         self.volume_slider.valueChanged.connect(self.volume_changed)
         self.panel_container_layout.addWidget(self.volume_slider)
         self.panel_container_layout.insertWidget(0, self.volume_slider)
@@ -422,6 +420,17 @@ class MainWindow(QMainWindow):
             self.song_display.setText(self.current_song)
             self.song_display.setCursorPosition(0)
             # Redundant code ^^^
+
+    def get_slider_value(self):
+        '''Returns MPD's volume. If MPD isn't playing returns 50'''
+        try:
+            if self.mpd_status.get("state") != "stop":
+                slider_value = int(self.client.status()["volume"])
+            else:
+                slider_value = 50
+        except Exception:
+            slider_value = 50
+        return slider_value
 
     def volume_changed(self, value):
         '''Changes mpd's volume if the volume slider is changed'''

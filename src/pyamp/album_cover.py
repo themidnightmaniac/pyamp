@@ -61,7 +61,6 @@ class AlbumCoverWindow(QMainWindow):
 
     def extract_album_art(self, file):
         '''Extracts the album art from the current song's file metadata'''
-        check = 0
         try:
             # Open the audio file
             audio = File(file)
