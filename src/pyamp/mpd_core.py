@@ -13,11 +13,13 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+import sys
 from mpd import MPDClient
 from pyamp.config import ConfigManager
 
 
 class MPDManager:
+    '''Manages the MPD client/connection'''
     def __init__(self):
 
         self.config_manager = ConfigManager()
@@ -30,7 +32,8 @@ class MPDManager:
             self.client.connect(self.host, self.port)
         except Exception as e:
             print(f"Error connecting to MPD: {e}")
-            exit()
+            sys.exit()
 
     def get_client(self):
+        '''Returns the MPD client'''
         return self.client

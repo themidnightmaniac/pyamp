@@ -13,15 +13,20 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from PySide6.QtWidgets import QApplication
 import sys
+from PySide6.QtWidgets import QApplication
 from pyamp.main_window import MainWindow
 from pyamp.mpd_core import MPDManager
 from pyamp.config import ConfigManager
 
 
 def main():
-    print("Pyamp 0.1.1 - Copyright (C) 2024  Ignacio Gonsalves\nThis program comes with ABSOLUTELY NO WARRANTY;\nThis is free software, and you are welcome to redistribute it under certain conditions.")
+    '''Runs Pyamp'''
+    print(
+    "Pyamp 0.1.1 - Copyright (C) 2024  Ignacio Gonsalves\n"
+    "This program comes with ABSOLUTELY NO WARRANTY."
+    "\nThis is free software, and you are welcome to redistribute it under certain conditions."
+    )
     config_manager = ConfigManager()
     if not config_manager.check_config():
         try:

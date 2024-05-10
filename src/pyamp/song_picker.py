@@ -13,21 +13,33 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from PySide6.QtWidgets import QMainWindow, QLineEdit, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QListWidgetItem, QListWidget, QAbstractItemView
+import base64
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QLineEdit,
+    QWidget,
+    QPushButton,
+    QHBoxLayout,
+    QVBoxLayout,
+    QListWidgetItem,
+    QListWidget,
+    QAbstractItemView
+)
 from PySide6.QtGui import QPixmap, QPainter
 from PySide6.QtCore import Qt, Signal
-import base64
 from pyamp.ui import createTitleBar
-from pyamp.images import song_picker_background
+from pyamp.images import SONG_PICKER_BACKGROUND
 
 
 class SongItem(QListWidgetItem):
+    '''Creates a song item'''
     def __init__(self, title, uri):
         super().__init__(title)
         self.uri = uri
 
 
 class SongPickerWindow(QMainWindow):
+    '''Creates a window for the song picker'''
     window_close = Signal()
 
     def __init__(self, mpd_manager):
@@ -40,7 +52,7 @@ class SongPickerWindow(QMainWindow):
 
         # Window background and alpha channel
         # Decode the base64 image data
-        background_data = base64.b64decode(song_picker_background)
+        background_data = base64.b64decode(SONG_PICKER_BACKGROUND)
 
         # Create a QPixmap from the binary data
         background_pixmap = QPixmap()
@@ -155,17 +167,22 @@ class SongPickerWindow(QMainWindow):
 
         self.layout.addWidget(self.button_container)
 
+        self.delay_active = None
+
         self.fetch_songs()
 
     def clear_queue(self):
+        '''Clears the MPD queue'''
         self.client.clear()
 
-    def paintEvent(self, event):
+    def paintEvent(self, event): # pylint: disable=invalid-name,unused-argument
+        '''Re-defines the painEvent so the background image actually displays'''
         painter = QPainter(self)
         painter.drawPixmap(self.rect(), self.background_image)
         self.delay_active = False
 
     def fetch_songs(self):
+        '''Fetch songs from MPD'''
         self.list_widget.clear()
         songs = self.client.listallinfo()
         for song in songs:
@@ -175,6 +192,7 @@ class SongPickerWindow(QMainWindow):
                 self.list_widget.addItem(item)
 
     def filter_options(self):
+        '''Filters songs by search'''
         search_text = self.search_bar.text().lower()
         for index in range(self.list_widget.count()):
             item = self.list_widget.item(index)
@@ -184,6 +202,7 @@ class SongPickerWindow(QMainWindow):
                 item.setHidden(True)
 
     def add_selected_songs(self):
+        '''Adds selected songs to the playlist'''
         selected_indexes = [index.row() for index in self.list_widget.selectedIndexes()]
         selected_songs = []
         for index in selected_indexes:
@@ -193,13 +212,16 @@ class SongPickerWindow(QMainWindow):
             self.client.add(song)
 
     def clear_selection(self):
+        '''Clears the song selection'''
         self.list_widget.clearSelection()
 
     def on_ok_clicked(self):
+        '''Closes the window and updates song display when OK is pressed'''
         self.window_close.emit()
         self.add_selected_songs()
         self.close()
 
     def close_song_picker(self):
+        '''Closes the song picker window'''
         self.close()
         self.window_close.emit()
