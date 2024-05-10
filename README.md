@@ -54,7 +54,10 @@ and happy listening!
 
 <h2 align="center">Configuration</h2>
 
-With your favorite editor, edit the config file found at ~/.config/pyamp/config.yaml.<br>
+With your favorite editor, you can edit the config file found at ~/.config/pyamp/config.yaml.<br>
+
+__Mpd Connection__:<br>
+If you changed mpd's host and/or port in mpd.conf, make sure to change it pyamp's config too. <br>
 
 __song_format__:<br>
 The possible values for song_format, for now, are:<br>
@@ -64,6 +67,3 @@ The possible values for song_format, for now, are:<br>
 
 __run_on_song_change__:<br>
 run_on_song_change accepts any script or command, just know it will be stopped when the program closes<br>
-
-__Mpd Connection__:<br>
-And also, if you changed mpd's host and/or port in mpd.conf, make sure to change it here too. <br>
