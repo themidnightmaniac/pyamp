@@ -2,6 +2,7 @@
 <h2 align="center">Minimal Python MPD Client</h2>
 
 Pyamp is a minimal mpd client written in python, using the pyside6 and mpd2 libraries.<br>
+<br>
 <img src="img/doc/pyamp_main1.png" alt="main window" width="400px" align="right" style="image-rendering: pixelated;">
 
 ### What it can do:
@@ -30,11 +31,10 @@ Pyamp is a minimal mpd client written in python, using the pyside6 and mpd2 libr
 <li>Fetch lyrics from the internet.</li>
 <li>Get you a girlfriend.</li>
 </ul>
-
 This is my first ever project in any programming language, so the code is very messy and unoptimized. If you want to contribute, fork or even remake Pyamp you are welcome.<br>
-
-Also if you find any bug or have a suggestion, feel free to open an issue and i'll be happy to help.
-<h3 align="center"><img src="img/doc/main1.gif"></h3>
+Also if you find any bug or have a suggestion, feel free to open an issue and i'll be happy to help.<br>
+<br>
+<p align="center"><img src="img/doc/main1.gif"></p>
 <h2 align="center">Screenshots</h2>
 <p align="center"><img src="img/doc/pyamp_full.png" alt="pyamp"></p>
 <p align="center"><img src="img/doc/kek.png" alt="pyamp"></p>
@@ -47,7 +47,7 @@ Then, clone the repo anywhere with git and cd into the cloned directory:<br>
 $ git clone https://github.com/themidnightmaniac/pyamp.git
 $ cd pyamp
 ```
-Then make install.sh executable and run it:
+Make install.sh executable and run it:
 ``` Bash
 $ chmod +x install.sh
 $ ./install.sh
