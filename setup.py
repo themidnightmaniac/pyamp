@@ -24,6 +24,9 @@ setup(
         'Operating System :: POSIX :: Linux',
     ],
     entry_points={
-        'console_scripts': ['pyamp = pyamp.main:main'],
+        'console_scripts': [
+            'pyamp = pyamp.main:main',
+            'img2b64 = resources.img2b64:main'
+        ]
     },
 )
