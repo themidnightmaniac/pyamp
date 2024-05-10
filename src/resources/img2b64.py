@@ -15,10 +15,11 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import base64
+import sys
 
 
-# Converts images to base 64
 def image_to_base64(image_path):
+    '''Converts given image to base 64'''
     # Read the image file in binary mode
     with open(image_path, 'rb') as f:
         image_data = f.read()
@@ -31,10 +32,11 @@ def image_to_base64(image_path):
 
 # Writes image string to file
 def convert_images_to_base64(directory, output_file):
+    '''Runs the image_to_base64 func and writes the strings to a file''' 
     # Open the output file in write mode
-    with open(output_file, 'w') as f:
+    with open(output_file, 'w', encoding='utf-8') as f:
         # Traverse the directory
-        for root, dirs, files in os.walk(directory):
+        for root, dirs, files in os.walk(directory): # pylint: disable=W0612
             for file in files:
                 # Check if the file is an image (you can adjust the extensions as needed)
                 if file.endswith(('.png', '.jpg', '.jpeg', '.gif')):
@@ -45,7 +47,7 @@ def convert_images_to_base64(directory, output_file):
                     base64_string = image_to_base64(image_path)
 
                     # Write the filename without extension
-                    filename_without_extension = os.path.splitext(file)[0]
+                    filename_without_extension = os.path.splitext(file)[0].upper()
                     f.write(f'{filename_without_extension} = """\n')
 
                     # Write the base64 string
@@ -56,8 +58,14 @@ def convert_images_to_base64(directory, output_file):
 
 
 def main():
+    '''Runs the script'''
+    # Check if directory argument is provided
+    if len(sys.argv) < 2:
+        print("Usage: python script.py <image_directory>")
+        sys.exit(1)
+
     # Directory containing the images
-    image_directory = 'src/resources/images/'
+    image_directory = sys.argv[1]
 
     # Output file for storing base64 strings
     output_file = 'b64images.txt'

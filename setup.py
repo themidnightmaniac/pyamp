@@ -26,7 +26,6 @@ setup(
     entry_points={
         'console_scripts': [
             'pyamp = pyamp.main:main',
-            'img2b64 = resources.img2b64:main'
         ]
     },
 )
