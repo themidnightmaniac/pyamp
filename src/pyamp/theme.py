@@ -25,7 +25,7 @@ from resources.themes.main.images import(
     MAIN_STOP,
     MAIN_ADD
 )
-from resources.themes.midnight_pipe.images import(
+from resources.themes.mpipe.images import(
     MPIPE_BACKGROUND,
     MPIPE_SONG_PICKER_BACKGROUND,
     MPIPE_NEXT,
@@ -74,8 +74,8 @@ class ThemeManager():
                 tbar_stylesheet
             )
         elif self.theme == "midnight_pipe":
-            stylesheet = self.read_css_file('../resources/themes/midnight_pipe/styles.css')
-            tbar_stylesheet = self.read_css_file('../resources/themes/midnight_pipe/title_bar.css')
+            stylesheet = self.read_css_file('../resources/themes/mpipe/styles.css')
+            tbar_stylesheet = self.read_css_file('../resources/themes/mpipe/title_bar.css')
             return(
                 MPIPE_SONG_PICKER_BACKGROUND,
                 MPIPE_BACKGROUND,
