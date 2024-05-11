@@ -28,8 +28,6 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QPixmap, QPainter
 from PySide6.QtCore import Qt, Signal
 from pyamp.ui import createTitleBar
-from pyamp.images import SONG_PICKER_BACKGROUND
-
 
 class SongItem(QListWidgetItem):
     '''Creates a song item'''
@@ -42,7 +40,7 @@ class SongPickerWindow(QMainWindow):
     '''Creates a window for the song picker'''
     window_close = Signal()
 
-    def __init__(self, mpd_manager):
+    def __init__(self, mpd_manager, img_song_picker_background, tbar_stylesheet):
         super().__init__()
         # Window title and geometry
         self.setWindowTitle("Pyamp - Song Picker")
@@ -50,9 +48,11 @@ class SongPickerWindow(QMainWindow):
         self.setGeometry(0, 0, 410, 770)
         self.setFixedSize(self.size())
 
+        img_background = img_song_picker_background
+
         # Window background and alpha channel
         # Decode the base64 image data
-        background_data = base64.b64decode(SONG_PICKER_BACKGROUND)
+        background_data = base64.b64decode(img_background)
 
         # Create a QPixmap from the binary data
         background_pixmap = QPixmap()
@@ -72,7 +72,7 @@ class SongPickerWindow(QMainWindow):
         self.client = mpd_manager.get_client()
 
         # Title bar
-        self.title_bar = createTitleBar(self, "Pyamp 1.0 - Song Picker", button=False)
+        self.title_bar = createTitleBar(self, "Pyamp 1.0 - Song Picker", tbar_stylesheet, button=False)
         self.setMenuWidget(self.title_bar)
 
         # Containers

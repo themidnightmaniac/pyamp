@@ -1,0 +1,50 @@
+QPushButton{
+	background-color: #4e3a4f;
+	border: 1px solid #d3d3d3;
+}
+QPushButton:hover{
+	background-color: #4e3a4f;
+	border: 2px solid #d3d3d3;
+}
+QPushButton:pressed{
+	background-color: transparent;
+}
+QPushButton:checked {
+	background-color: transparent;
+}
+QSlider::groove:horizontal {
+	background-color: #4e3a4f;
+	border: 1px solid #d3d3d3;
+}
+QSlider::handle:horizontal {
+	background-color: black;
+	border: 1px solid #d3d3d3;
+	margin: -4 0;
+	width: 10px;
+}
+QSlider::handle:horizontal::active {
+	border-width: 3px;
+}
+QProgressBar {
+	border: none;
+	background-color: transparent;
+	color: #d3d3d3;
+	text-align: center;
+	font-size: 9pt;
+}
+QProgressBar::chunk {
+	background-color: #4e3a4f;
+	border: 1px solid #d3d3d3;
+}
+QLineEdit {
+	border: 1px solid #d3d3d3;
+	border-radius: 0px;
+	background-color: #4e3a4f;
+	padding: 2px;
+	color: #d3d3d3;
+}
+QLabel {
+	font-size: 22pt;
+	color: #d3d3d3;
+	margin: 10px;
+}

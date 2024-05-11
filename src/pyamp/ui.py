@@ -24,7 +24,6 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
-
 class CreateSpacer(QSpacerItem):
     '''Creates a spacer item'''
     def __init__(self, width, height, size_policy_horizontal, size_policy_vertical): # pylint: disable=W0246
@@ -47,11 +46,13 @@ class NonSelectableLineEdit(QLineEdit):
 
 class createTitleBar(QWidget): # pylint: disable=C0103
     '''Creates a title bar'''
-    def __init__(self, parent, title, button=True):
+    def __init__(self, parent, title, tbar_stylesheet, button=True):
         super().__init__(parent)
         self.title = title
         self.button = button
+        self.stylesheet = tbar_stylesheet
         self.init_ui()
+
 
     def init_ui(self):
         '''Creates the title bar'''
@@ -65,32 +66,13 @@ class createTitleBar(QWidget): # pylint: disable=C0103
         # Title label
         title_label = QLabel(self.title)
         title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet("""
-            QLabel {
-                color: dodgerblue;
-                font-size: 10px;
-            }
-        """)
+        title_label.setStyleSheet(self.stylesheet)
         title_bar_layout.addWidget(title_label)
 
         # Close button (if enabled)
         if self.button:
             close_button = QPushButton("X")
-            close_button.setStyleSheet("""
-                QPushButton {
-                    background-color: transparent;
-                    border: none;
-                    color: dodgerblue;
-                }
-                QPushButton:hover {
-                    background-color: dodgerblue;
-                    color: black;
-                }
-                QPushButton:pressed {
-                    background-color: dodgerblue;
-                    color: white;
-                }
-            """)
+            close_button.setStyleSheet(self.stylesheet)
             close_button.setFixedHeight(16)
             close_button.setFixedWidth(16)
             close_button.clicked.connect(self.parent().close)
