@@ -16,7 +16,7 @@ setup(
     author='Ignacio Gonsalves',
     description='Minimal MPD client written in Python using Qt',
     license='GPL-3.0',
-    long_description=open('README.md', encoding='UTF-8').read(), 
+    long_description=open('README.md', encoding='UTF-8').read(),
     long_description_content_type='text/markdown',
     url='https://github.com/themidnightmaniac/pyamp',
     classifiers=[
