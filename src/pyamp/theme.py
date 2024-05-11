@@ -61,43 +61,50 @@ class ThemeManager():
         if self.theme == "main":
             stylesheet = self.read_css_file('../resources/themes/main/styles.css')
             tbar_stylesheet = self.read_css_file('../resources/themes/main/title_bar.css')
-            return(
-                MAIN_SONG_PICKER_BACKGROUND,
-                MAIN_BACKGROUND,
-                MAIN_NEXT,
-                MAIN_PREV,
-                MAIN_TOGGLE,
-                MAIN_ALBUM,
-                MAIN_STOP,
-                MAIN_ADD,
-                stylesheet,
-                tbar_stylesheet
-            )
+            spicker_stylesheet = self.read_css_file('../resources/themes/main/song_picker.css')
+            sp_background = MAIN_SONG_PICKER_BACKGROUND
+            background = MAIN_BACKGROUND
+            next_img = MAIN_NEXT
+            prev_img = MAIN_PREV
+            toggle_img =MAIN_TOGGLE
+            album_img = MAIN_ALBUM
+            stop_img = MAIN_STOP
+            add_img = MAIN_ADD
         elif self.theme == "midnight_pipe":
             stylesheet = self.read_css_file('../resources/themes/mpipe/styles.css')
             tbar_stylesheet = self.read_css_file('../resources/themes/mpipe/title_bar.css')
-            return(
-                MPIPE_SONG_PICKER_BACKGROUND,
-                MPIPE_BACKGROUND,
-                MPIPE_NEXT,
-                MPIPE_PREV,
-                MPIPE_TOGGLE,
-                MPIPE_ALBUM,
-                MPIPE_STOP,
-                MPIPE_ADD,
-                stylesheet,
-                tbar_stylesheet
-            )
+            spicker_stylesheet = self.read_css_file('../resources/themes/mpipe/song_picker.css')
+            sp_background = MPIPE_SONG_PICKER_BACKGROUND
+            background = MPIPE_BACKGROUND
+            next_img = MPIPE_NEXT
+            prev_img = MPIPE_PREV
+            toggle_img = MPIPE_TOGGLE
+            album_img = MPIPE_ALBUM
+            stop_img = MPIPE_STOP
+            add_img = MPIPE_ADD
         else:
             stylesheet = self.read_css_file('../resources/themes/main/styles.css')
-            return(
-                MAIN_SONG_PICKER_BACKGROUND,
-                MAIN_BACKGROUND,
-                MAIN_NEXT,
-                MAIN_PREV,
-                MAIN_TOGGLE,
-                MAIN_ALBUM,
-                MAIN_STOP,
-                MAIN_ADD,
-                stylesheet
+            tbar_stylesheet = self.read_css_file('../resources/themes/main/title_bar.css')
+            spicker_stylesheet = self.read_css_file('../resources/themes/main/song_picker.css')
+            sp_background = MAIN_SONG_PICKER_BACKGROUND
+            background = MAIN_BACKGROUND
+            next_img = MAIN_NEXT
+            prev_img = MAIN_PREV
+            toggle_img =MAIN_TOGGLE
+            album_img = MAIN_ALBUM
+            stop_img = MAIN_STOP
+            add_img = MAIN_ADD
+        print(f"Using the {self.theme} theme.")
+        return(
+            sp_background,
+            background,
+            next_img,
+            prev_img,
+            toggle_img,
+            album_img,
+            stop_img,
+            add_img,
+            stylesheet,
+            spicker_stylesheet,
+            tbar_stylesheet,
             )

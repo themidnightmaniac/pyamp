@@ -55,7 +55,19 @@ class MainWindow(QMainWindow):
 
         theme_manager = ThemeManager()
 
-        img_song_picker_background, img_background, img_next, img_prev, img_toggle, img_album, img_stop, img_add, stylesheet, tbar_stylesheet = theme_manager.get_theme()
+        (
+            img_song_picker_background,
+            img_background,
+            img_next,
+            img_prev,
+            img_toggle,
+            img_album,
+            img_stop,
+            img_add,
+            stylesheet,
+            spicker_stylesheet,
+            tbar_stylesheet,
+        ) = theme_manager.get_theme()
 
         # Window background and alpha channel
         # Decode the base64 image data
@@ -237,7 +249,12 @@ class MainWindow(QMainWindow):
         self.button_container_layout.addWidget(self.add)
         self.add.setIcon(add_icon)
         self.add.setStyleSheet(stylesheet)
-        self.song_picker_window = SongPickerWindow(mpd_manager, img_song_picker_background, tbar_stylesheet)
+        self.song_picker_window = SongPickerWindow(
+            mpd_manager,
+            img_song_picker_background,
+            spicker_stylesheet,
+            tbar_stylesheet,
+        )
         self.add.clicked.connect(self.open_song_picker)
 
         # Next song button
