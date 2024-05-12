@@ -53,27 +53,35 @@ class createTitleBar(QWidget): # pylint: disable=C0103
         self.stylesheet = tbar_stylesheet
         self.init_ui()
 
-
     def init_ui(self):
         '''Creates the title bar'''
         title_bar_layout = QHBoxLayout(self)
         title_bar_layout.setContentsMargins(5, 4, 5, 0)
-
-        # Title spacer
-        title_spacer = QSpacerItem(16, 16, QSizePolicy.Fixed, QSizePolicy.Fixed)
-        title_bar_layout.addItem(title_spacer)
-
-        # Title label
-        title_label = QLabel(self.title)
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(self.stylesheet)
-        title_bar_layout.addWidget(title_label)
-
         # Close button (if enabled)
         if self.button:
+            more_button = QPushButton("=")
+            more_button.setStyleSheet(self.stylesheet)
+            more_button.setFixedHeight(16)
+            more_button.setFixedWidth(16)
+            more_button.clicked.connect(lambda: print("Clicked"))
+            title_bar_layout.addWidget(more_button)
+
+            title_label = QLabel(self.title)
+            title_label.setAlignment(Qt.AlignCenter)
+            title_label.setStyleSheet(self.stylesheet)
+            title_bar_layout.addWidget(title_label)
+
             close_button = QPushButton("X")
             close_button.setStyleSheet(self.stylesheet)
             close_button.setFixedHeight(16)
             close_button.setFixedWidth(16)
             close_button.clicked.connect(self.parent().close)
             title_bar_layout.addWidget(close_button)
+        else:
+            spacer = QSpacerItem(16, 16, QSizePolicy.Fixed, QSizePolicy.Fixed)
+            title_bar_layout.addItem(spacer)
+            # Title label
+            title_label = QLabel(self.title)
+            title_label.setAlignment(Qt.AlignCenter)
+            title_label.setStyleSheet(self.stylesheet)
+            title_bar_layout.addWidget(title_label)
