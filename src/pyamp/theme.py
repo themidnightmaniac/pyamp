@@ -35,6 +35,16 @@ from resources.themes.mpipe.images import(
     MPIPE_STOP,
     MPIPE_ADD
 )
+from resources.themes.metal.images import(
+    METAL_BACKGROUND,
+    METAL_SONG_PICKER_BACKGROUND,
+    METAL_NEXT,
+    METAL_PREV,
+    METAL_TOGGLE,
+    METAL_ALBUM,
+    METAL_STOP,
+    METAL_ADD
+)
 
 class ThemeManager():
     '''Manages the program themes'''
@@ -82,6 +92,18 @@ class ThemeManager():
             album_img = MPIPE_ALBUM
             stop_img = MPIPE_STOP
             add_img = MPIPE_ADD
+        elif self.theme == "metal":
+            stylesheet = self.read_css_file('../resources/themes/metal/styles.css')
+            tbar_stylesheet = self.read_css_file('../resources/themes/metal/title_bar.css')
+            spicker_stylesheet = self.read_css_file('../resources/themes/metal/song_picker.css')
+            sp_background = METAL_SONG_PICKER_BACKGROUND
+            background = METAL_BACKGROUND
+            next_img = METAL_NEXT
+            prev_img = METAL_PREV
+            toggle_img = METAL_TOGGLE
+            album_img = METAL_ALBUM
+            stop_img = METAL_STOP
+            add_img = METAL_ADD
         else:
             stylesheet = self.read_css_file('../resources/themes/main/styles.css')
             tbar_stylesheet = self.read_css_file('../resources/themes/main/title_bar.css')

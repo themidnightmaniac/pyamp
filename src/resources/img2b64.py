@@ -68,7 +68,7 @@ def main():
     image_directory = sys.argv[1]
 
     # Output file for storing base64 strings
-    output_file = 'b64images.txt'
+    output_file = 'images.py'
 
     # Convert images to base64 and write to a single file
     convert_images_to_base64(image_directory, output_file)
