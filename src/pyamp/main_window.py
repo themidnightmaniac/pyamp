@@ -28,7 +28,7 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QVBoxLayout
-)
+)  
 from PySide6.QtGui import QPixmap, QPainter, QFont, QIcon, QImage
 from PySide6.QtCore import QTimer, Qt, Signal
 from pyamp.song_picker import SongPickerWindow
@@ -58,6 +58,7 @@ class MainWindow(QMainWindow):
         (
             img_song_picker_background,
             img_background,
+            img_op_background,
             img_next,
             img_prev,
             img_toggle,
@@ -67,6 +68,7 @@ class MainWindow(QMainWindow):
             stylesheet,
             spicker_stylesheet,
             tbar_stylesheet,
+            options_stylesheet,
         ) = theme_manager.get_theme()
 
         # Window background and alpha channel
@@ -130,7 +132,7 @@ class MainWindow(QMainWindow):
         self.layout.addItem(self.spacer2, 1, 3, 2, 1)
 
         # Title bar
-        self.title_bar = createTitleBar(self, "Pyamp 0.1.1", tbar_stylesheet, button=True)
+        self.title_bar = createTitleBar(self, "Pyamp 0.1.1", tbar_stylesheet, mpd_manager, img_op_background, options_stylesheet, button=True)
         self.setMenuWidget(self.title_bar)
 
         # Containers
@@ -518,4 +520,3 @@ class MainWindow(QMainWindow):
         '''Re-defines the painEvent so the background image actually displays'''
         painter = QPainter(self)
         painter.drawPixmap(self.rect(), self.background_image)
-        self.delay_active = False

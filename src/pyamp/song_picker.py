@@ -73,7 +73,7 @@ class SongPickerWindow(QMainWindow):
         self.client = mpd_manager.get_client()
 
         # Title bar
-        self.title_bar = createTitleBar(self, "Pyamp 1.0 - Song Picker", tbar_stylesheet, button=False)
+        self.title_bar = createTitleBar(self, "Pyamp 1.0 - Song Picker", tbar_stylesheet, mpd_manager, None, None, button=False)
         self.setMenuWidget(self.title_bar)
 
         # Containers

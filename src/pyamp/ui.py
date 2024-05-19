@@ -23,6 +23,7 @@ from PySide6.QtWidgets import (
     QSizePolicy
 )
 from PySide6.QtCore import Qt
+from pyamp.options import OptionsWindow
 
 class CreateSpacer(QSpacerItem):
     '''Creates a spacer item'''
@@ -46,24 +47,25 @@ class NonSelectableLineEdit(QLineEdit):
 
 class createTitleBar(QWidget): # pylint: disable=C0103
     '''Creates a title bar'''
-    def __init__(self, parent, title, tbar_stylesheet, button=True):
+    def __init__(self, parent, title, tbar_stylesheet, mpd_manager, img_op_background, options_stylesheet, button=True):
         super().__init__(parent)
         self.title = title
         self.button = button
         self.stylesheet = tbar_stylesheet
-        self.init_ui()
+        self.init_ui(mpd_manager, img_op_background, options_stylesheet)
 
-    def init_ui(self):
+    def init_ui(self, mpd_manager, img_op_background, options_stylesheet):
         '''Creates the title bar'''
         title_bar_layout = QHBoxLayout(self)
         title_bar_layout.setContentsMargins(5, 4, 5, 0)
         # Close button (if enabled)
         if self.button:
+            self.options_window = OptionsWindow(mpd_manager, img_op_background, options_stylesheet)
             more_button = QPushButton("=")
             more_button.setStyleSheet(self.stylesheet)
             more_button.setFixedHeight(16)
             more_button.setFixedWidth(16)
-            more_button.clicked.connect(lambda: print("Clicked"))
+            more_button.clicked.connect(self.open_options)
             title_bar_layout.addWidget(more_button)
 
             title_label = QLabel(self.title)
@@ -85,3 +87,7 @@ class createTitleBar(QWidget): # pylint: disable=C0103
             title_label.setAlignment(Qt.AlignCenter)
             title_label.setStyleSheet(self.stylesheet)
             title_bar_layout.addWidget(title_label)
+
+    def open_options(self):
+        '''Opens the playback options window'''
+        self.options_window.show()

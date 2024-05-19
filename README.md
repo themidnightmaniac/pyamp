@@ -21,7 +21,6 @@ Pyamp is a minimal mpd client written in python, using the pyside6 and mpd2 libr
 <ul>
 <li>Display the queue.</li>
 <li>Interact with playlists.</li>
-<li>Toggle random, consume, or single mode.</li>
 <li>Remove single songs.</li>
 </ul>
 

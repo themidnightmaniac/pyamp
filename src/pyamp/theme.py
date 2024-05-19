@@ -18,6 +18,7 @@ from pyamp.config import ConfigManager
 from resources.themes.main.images import(
     MAIN_BACKGROUND,
     MAIN_SONG_PICKER_BACKGROUND,
+    MAIN_OPTIONS_BACKGROUND,
     MAIN_NEXT,
     MAIN_PREV,
     MAIN_TOGGLE,
@@ -28,6 +29,7 @@ from resources.themes.main.images import(
 from resources.themes.mpipe.images import(
     MPIPE_BACKGROUND,
     MPIPE_SONG_PICKER_BACKGROUND,
+    MPIPE_OPTIONS_BACKGROUND,
     MPIPE_NEXT,
     MPIPE_PREV,
     MPIPE_TOGGLE,
@@ -38,6 +40,7 @@ from resources.themes.mpipe.images import(
 from resources.themes.metal.images import(
     METAL_BACKGROUND,
     METAL_SONG_PICKER_BACKGROUND,
+    METAL_OPTIONS_BACKGROUND,
     METAL_NEXT,
     METAL_PREV,
     METAL_TOGGLE,
@@ -72,8 +75,10 @@ class ThemeManager():
             stylesheet = self.read_css_file('../resources/themes/main/styles.css')
             tbar_stylesheet = self.read_css_file('../resources/themes/main/title_bar.css')
             spicker_stylesheet = self.read_css_file('../resources/themes/main/song_picker.css')
+            options_stylesheet = self.read_css_file('../resources/themes/main/options.css')
             sp_background = MAIN_SONG_PICKER_BACKGROUND
             background = MAIN_BACKGROUND
+            op_background = MAIN_OPTIONS_BACKGROUND
             next_img = MAIN_NEXT
             prev_img = MAIN_PREV
             toggle_img =MAIN_TOGGLE
@@ -84,7 +89,9 @@ class ThemeManager():
             stylesheet = self.read_css_file('../resources/themes/mpipe/styles.css')
             tbar_stylesheet = self.read_css_file('../resources/themes/mpipe/title_bar.css')
             spicker_stylesheet = self.read_css_file('../resources/themes/mpipe/song_picker.css')
+            options_stylesheet = self.read_css_file('../resources/themes/mpipe/options.css')
             sp_background = MPIPE_SONG_PICKER_BACKGROUND
+            op_background = MPIPE_OPTIONS_BACKGROUND
             background = MPIPE_BACKGROUND
             next_img = MPIPE_NEXT
             prev_img = MPIPE_PREV
@@ -96,7 +103,9 @@ class ThemeManager():
             stylesheet = self.read_css_file('../resources/themes/metal/styles.css')
             tbar_stylesheet = self.read_css_file('../resources/themes/metal/title_bar.css')
             spicker_stylesheet = self.read_css_file('../resources/themes/metal/song_picker.css')
+            options_stylesheet = self.read_css_file('../resources/themes/metal/options.css')
             sp_background = METAL_SONG_PICKER_BACKGROUND
+            op_background = METAL_OPTIONS_BACKGROUND
             background = METAL_BACKGROUND
             next_img = METAL_NEXT
             prev_img = METAL_PREV
@@ -108,7 +117,9 @@ class ThemeManager():
             stylesheet = self.read_css_file('../resources/themes/main/styles.css')
             tbar_stylesheet = self.read_css_file('../resources/themes/main/title_bar.css')
             spicker_stylesheet = self.read_css_file('../resources/themes/main/song_picker.css')
+            options_stylesheet = self.read_css_file('../resources/themes/main/options.css')
             sp_background = MAIN_SONG_PICKER_BACKGROUND
+            op_background = MAIN_OPTIONS_BACKGROUND
             background = MAIN_BACKGROUND
             next_img = MAIN_NEXT
             prev_img = MAIN_PREV
@@ -120,6 +131,7 @@ class ThemeManager():
         return(
             sp_background,
             background,
+            op_background,
             next_img,
             prev_img,
             toggle_img,
@@ -129,4 +141,5 @@ class ThemeManager():
             stylesheet,
             spicker_stylesheet,
             tbar_stylesheet,
+            options_stylesheet,
             )
