@@ -33,4 +33,4 @@ This is my first ever project in any programming language, so the code is very m
 Also if you find any bug or have a suggestion, feel free to open an issue and i'll be happy to help.<br>
 <br>
 
-### More: [Installation](doc/install.md) | [Configuration](doc/config.md) | [Screenshots](doc/screenshots.md) | [Creating Themes](README.md)
+### More: [Installation](doc/install.md) | [Configuration](doc/config.md) | [Screenshots](doc/screenshots.md)
