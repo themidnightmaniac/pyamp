@@ -319,14 +319,8 @@ class MainWindow(QMainWindow):
                 self.previous_song = current_song
                 self.songChanged.emit()
 
-                # Runs run_on_song_change command if there's one
-                if self.user_command:
-                    try:
-                        global subprocess_instance
-                        with subprocess.Popen(self.user_command.split()) as subprocess_instance:
-                            subprocess_instance.communicate()
-                    except Exception as e:
-                        print("An error ocurred while running the custom command: ", e)
+                # Tries to run run_on_song_change command
+                self.run_user_command("song_change")
 
                 # Skips the first current song var update
                 if self.songs_played == 0:
@@ -341,6 +335,17 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print("Connection error:", e)
             self.close()
+
+    def run_user_command(self, cmd_arg):
+        '''Runs run_on_song_change command if it is specified'''
+        if self.user_command:
+            command = self.user_command + f" {cmd_arg}"
+            try:
+                global subprocess_instance
+                with subprocess.Popen(command.split()) as subprocess_instance:
+                    subprocess_instance.communicate()
+            except Exception as e:
+                print("An error ocurred while running the custom command: ", e)
 
     def get_current_song_info(self):
         '''Gets all the current song info'''
@@ -383,7 +388,6 @@ class MainWindow(QMainWindow):
             self.current_song = "Not Playing!"
             self.song_display.setText(self.current_song)
             self.song_display.setCursorPosition(0)
-            # Redundant code ^^^
 
     def get_slider_value(self):
         '''Returns MPD's volume. If MPD isn't playing returns 50'''
@@ -443,10 +447,12 @@ class MainWindow(QMainWindow):
             self.playstate = "Playing:"
             self.client.play()
             self.song_changed()
+            self.run_user_command("resumed")
         else:
             self.playstate = "Paused:"
             self.client.pause()
             self.song_changed()
+            self.run_user_command("paused")
 
     def on_next_press(self):
         '''Skips song and changes play state'''
@@ -475,6 +481,7 @@ class MainWindow(QMainWindow):
         self.client.stop()
         self.song_display.setText("Not Playing!")
         self.toggle.setChecked(False)
+        self.run_user_command("stopped")
 
     def closeEvent(self, event): # pylint: disable=invalid-name,unused-argument
         ''''Re-defines closeEvent to properly close the program'''
