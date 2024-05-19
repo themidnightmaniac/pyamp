@@ -1,0 +1,50 @@
+QPushButton{
+	background-color: black;
+	border: 1px solid dodgerblue;
+}
+QPushButton:hover{
+	background-color: black;
+	border: 2px solid dodgerblue;
+}
+QPushButton:pressed{
+	background-color: transparent;
+}
+QPushButton:checked {
+	background-color: transparent;
+}
+QSlider::groove:horizontal {
+	background-color: black;
+	border: 1px solid dodgerblue;
+}
+QSlider::handle:horizontal {
+	background-color: #262626;
+	border: 1px solid dodgerblue;
+	margin: -4 0;
+	width: 10px;
+}
+QSlider::handle:horizontal::active {
+	border-width: 3px;
+}
+QProgressBar {
+	border: none;
+	background-color: transparent;
+	color: dodgerblue;
+	text-align: center;
+	font-size: 9pt;
+}
+QProgressBar::chunk {
+	background-color: black;
+	border: 1px solid dodgerblue;
+}
+QLineEdit {
+	border: 1px solid dodgerblue;
+	border-radius: 0px;
+	background-color: black;
+	padding: 2px;
+	color: dodgerblue;
+}
+QLabel {
+	font-size: 22pt;
+	color: white;
+	margin: 10px;
+}

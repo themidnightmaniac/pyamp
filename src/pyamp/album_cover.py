@@ -72,13 +72,11 @@ class AlbumCoverWindow(QMainWindow):
                 pil_image = Image.open(io.BytesIO(image_data))
                 # Convert PIL Image to QPixmap
                 image = QPixmap.fromImage(ImageQt.ImageQt(pil_image))
-                print("Album art found.")
             else:
-                print("No album art found.")
                 image = None
             return image
         except Exception as e:
-            print(f"Error: {e}. MPD probably isn't playing.")
+            print(f"Album art error: {e}. MPD probably isn't playing.")
             return None
 
     def update_album_art(self):

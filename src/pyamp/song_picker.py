@@ -28,8 +28,6 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QPixmap, QPainter
 from PySide6.QtCore import Qt, Signal
 from pyamp.ui import createTitleBar
-from pyamp.images import SONG_PICKER_BACKGROUND
-
 
 class SongItem(QListWidgetItem):
     '''Creates a song item'''
@@ -42,7 +40,7 @@ class SongPickerWindow(QMainWindow):
     '''Creates a window for the song picker'''
     window_close = Signal()
 
-    def __init__(self, mpd_manager):
+    def __init__(self, mpd_manager, img_song_picker_background, spicker_stylesheet, tbar_stylesheet):
         super().__init__()
         # Window title and geometry
         self.setWindowTitle("Pyamp - Song Picker")
@@ -50,9 +48,12 @@ class SongPickerWindow(QMainWindow):
         self.setGeometry(0, 0, 410, 770)
         self.setFixedSize(self.size())
 
+        img_background = img_song_picker_background
+        stylesheet = spicker_stylesheet
+
         # Window background and alpha channel
         # Decode the base64 image data
-        background_data = base64.b64decode(SONG_PICKER_BACKGROUND)
+        background_data = base64.b64decode(img_background)
 
         # Create a QPixmap from the binary data
         background_pixmap = QPixmap()
@@ -72,7 +73,7 @@ class SongPickerWindow(QMainWindow):
         self.client = mpd_manager.get_client()
 
         # Title bar
-        self.title_bar = createTitleBar(self, "Pyamp 1.0 - Song Picker", button=False)
+        self.title_bar = createTitleBar(self, "Pyamp 1.0 - Song Picker", tbar_stylesheet, mpd_manager, None, None, button=False)
         self.setMenuWidget(self.title_bar)
 
         # Containers
@@ -84,84 +85,28 @@ class SongPickerWindow(QMainWindow):
         self.search_bar = QLineEdit()
         self.search_bar.setPlaceholderText("Search...")
         self.search_bar.textChanged.connect(self.filter_options)
-        self.search_bar.setStyleSheet("""
-        QLineEdit{
-            border: 1px solid dodgerblue;
-            border-radius: 0;
-            color: dodgerblue;
-            background-color: black;
-        }
-        """)
+        self.search_bar.setStyleSheet(stylesheet)
         self.layout.addWidget(self.search_bar)
 
         self.list_widget = QListWidget()
-        self.list_widget.setStyleSheet("""
-    QListWidget {
-        background-color: black;
-        color: dodgerblue;
-        border: 1px solid dodgerblue
-    }
-    QListWidget::item:selected {
-        color: white;
-        background-color: black;
-    }
-    QScrollBar:vertical {
-        background-color: black;
-        border-left: 1px solid dodgerblue;
-        width: 15px;
-    }
-    QScrollBar::handle:vertical {
-        background-color: black;
-        border-top: 1px solid dodgerblue;
-        border-bottom: 1px solid dodgerblue;
-        margin: 0 -4px;
-    }
-    QScrollBar::handle:vertical::active {
-        border-top: 2px solid dodgerblue;
-        border-bottom: 2px solid dodgerblue;
-    }
-
-    QScrollBar::add-line:vertical,
-    QScrollBar::sub-line:vertical {
-        width: 0;
-        height: 0;
-    }
-    """)
+        self.list_widget.setStyleSheet(stylesheet)
         self.list_widget.setSelectionMode(QAbstractItemView.MultiSelection)
         self.list_widget.setSelectionBehavior(QAbstractItemView.SelectItems)
         self.layout.addWidget(self.list_widget)
 
         # Buttons
-        button_stylesheet = """
-            QPushButton{
-                color: dodgerblue;
-                background-color: black;
-                border: 1px solid dodgerblue;
-            }
-            QPushButton:hover{
-                background-color: black;
-                border: 2px solid dodgerblue;
-            }
-            QPushButton:pressed{
-                background-color: transparent;
-            }
-            QPushButton:checked {
-                background-color: transparent;
-            }
-        """
-
         self.ok_button = QPushButton("OK")
         self.ok_button.clicked.connect(self.on_ok_clicked)
-        self.ok_button.setStyleSheet(button_stylesheet)
+        self.ok_button.setStyleSheet(stylesheet)
         self.button_container_layout.addWidget(self.ok_button)
 
         self.cancel_button = QPushButton("Cancel")
         self.cancel_button.clicked.connect(self.close_song_picker)
-        self.cancel_button.setStyleSheet(button_stylesheet)
+        self.cancel_button.setStyleSheet(stylesheet)
         self.button_container_layout.addWidget(self.cancel_button)
 
         self.clear_button = QPushButton("Clear Queue")
-        self.clear_button.setStyleSheet(button_stylesheet)
+        self.clear_button.setStyleSheet(stylesheet)
         self.button_container_layout.addWidget(self.clear_button)
         self.clear_button.clicked.connect(self.clear_queue)
 

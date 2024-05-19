@@ -1,0 +1,51 @@
+QPushButton{
+	color: dodgerblue;
+	background-color: black;
+	border: 1px solid dodgerblue;
+}
+QPushButton:hover{
+	background-color: black;
+	border: 2px solid dodgerblue;
+}
+QPushButton:pressed{
+	background-color: transparent;
+}
+QPushButton:checked {
+	background-color: transparent;
+}
+QListWidget {
+	background-color: black;
+	color: dodgerblue;
+	border: 1px solid dodgerblue
+}
+QListWidget::item:selected {
+	color: white;
+	background-color: black;
+}
+QScrollBar:vertical {
+	background-color: black;
+	border-left: 1px solid dodgerblue;
+	width: 15px;
+}
+QScrollBar::handle:vertical {
+	background-color: black;
+	border-top: 1px solid dodgerblue;
+	border-bottom: 1px solid dodgerblue;
+	margin: 0 -4px;
+}
+QScrollBar::handle:vertical::active {
+	border-top: 2px solid dodgerblue;
+	border-bottom: 2px solid dodgerblue;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+	width: 0;
+	height: 0;
+}
+QLineEdit{
+	border: 1px solid dodgerblue;
+	border-radius: 0;
+	color: dodgerblue;
+	background-color: black;
+}

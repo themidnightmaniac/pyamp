@@ -28,14 +28,14 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QVBoxLayout
-)
+)  
 from PySide6.QtGui import QPixmap, QPainter, QFont, QIcon, QImage
 from PySide6.QtCore import QTimer, Qt, Signal
 from pyamp.song_picker import SongPickerWindow
 from pyamp.album_cover import AlbumCoverWindow
 from pyamp.ui import createTitleBar, NonSelectableLineEdit, CreateSpacer
 from pyamp.config import ConfigManager
-from pyamp.images import BACKGROUND, NEXT, PREV, TOGGLE, ALBUM, STOP, ADD
+from pyamp.theme import ThemeManager
 
 
 # Main window
@@ -53,9 +53,27 @@ class MainWindow(QMainWindow):
         self.setGeometry(100, 100, 400, 160)
         self.setFixedSize(self.size())
 
+        theme_manager = ThemeManager()
+
+        (
+            img_song_picker_background,
+            img_background,
+            img_op_background,
+            img_next,
+            img_prev,
+            img_toggle,
+            img_album,
+            img_stop,
+            img_add,
+            stylesheet,
+            spicker_stylesheet,
+            tbar_stylesheet,
+            options_stylesheet,
+        ) = theme_manager.get_theme()
+
         # Window background and alpha channel
         # Decode the base64 image data
-        background_data = base64.b64decode(BACKGROUND)
+        background_data = base64.b64decode(img_background)
 
         # Create a QPixmap from the binary data
         background_pixmap = QPixmap()
@@ -114,7 +132,7 @@ class MainWindow(QMainWindow):
         self.layout.addItem(self.spacer2, 1, 3, 2, 1)
 
         # Title bar
-        self.title_bar = createTitleBar(self, "Pyamp 0.1.1", button=True)
+        self.title_bar = createTitleBar(self, "Pyamp 0.1.2", tbar_stylesheet, mpd_manager, img_op_background, options_stylesheet, button=True)
         self.setMenuWidget(self.title_bar)
 
         # Containers
@@ -138,13 +156,7 @@ class MainWindow(QMainWindow):
 
         # Clock Display
         self.clock_display = QLabel()
-        self.clock_display.setStyleSheet("""
-        QLabel {
-        font-size: 22pt;
-        color: white;
-        margin: 10px;
-}
-""")
+        self.clock_display.setStyleSheet(stylesheet)
         self.clock_display.setText(self.current_time)
         self.clock_display.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.display_container_layout.addWidget(self.clock_display)
@@ -156,15 +168,7 @@ class MainWindow(QMainWindow):
 
         # Song display
         self.song_display = NonSelectableLineEdit(central_widget)
-        self.song_display.setStyleSheet("""
-    QLineEdit {
-        border: 1px solid dodgerblue;
-        border-radius: 0px;
-        background-color: black;
-        padding: 2px;
-        color: dodgerblue;
-}
-""")
+        self.song_display.setStyleSheet(stylesheet)
         self.song_display.setFixedHeight(30)
         self.song_display.setFixedWidth(260)
         self.song_display.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
@@ -181,20 +185,7 @@ class MainWindow(QMainWindow):
         # Progress bar
         self.progress_bar = QProgressBar(central_widget)
         self.progress_bar.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
-        self.progress_bar.setStyleSheet("""
-    QProgressBar {
-        border: none;
-        background-color: transparent;
-        color: dodgerblue;
-        text-align: center;
-        font-size: 9pt;
-    }
-
-    QProgressBar::chunk {
-        background-color: black;
-        border: 1px solid dodgerblue;
-    }
-""")
+        self.progress_bar.setStyleSheet(stylesheet)
         self.progress_bar.setFixedHeight(20)
         self.song_container_layout.addWidget(self.progress_bar)
 
@@ -205,22 +196,7 @@ class MainWindow(QMainWindow):
         # Volume slider
         self.volume_slider = QSlider(Qt.Horizontal)
         self.volume_slider.setFixedHeight(15)
-        self.volume_slider.setStyleSheet("""
-    QSlider::groove:horizontal {
-        background-color: black;
-        border: 1px solid dodgerblue;
-    }
-
-    QSlider::handle:horizontal {
-        background-color: #262626;
-        border: 1px solid dodgerblue;
-        margin: -4 0;
-        width: 10px;
-    }
-    QSlider::handle:horizontal::active {
-        border-width: 3px;
-    }
-""")
+        self.volume_slider.setStyleSheet(stylesheet)
         self.volume_slider.setRange(0, 100)
         self.volume_slider.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         mpd_volume = self.get_slider_value()
@@ -236,83 +212,71 @@ class MainWindow(QMainWindow):
         self.panel_container_layout.addWidget(self.button_container)
 
         # Buttons
-        button_stylesheet = """
-            QPushButton{
-                background-color: black;
-                border: 1px solid dodgerblue;
-            }
-            QPushButton:hover{
-                background-color: black;
-                border: 2px solid dodgerblue;
-            }
-            QPushButton:pressed{
-                background-color: transparent;
-            }
-            QPushButton:checked {
-                background-color: transparent;
-            }
-        """
-
         # Previous song button
-        prev_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(PREV))))
+        prev_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(img_prev))))
         self.prev = QPushButton("", self)
         self.prev.setFixedHeight(25)
         self.prev.setFixedWidth(25)
         self.button_container_layout.addWidget(self.prev)
         self.prev.setIcon(prev_icon)
-        self.prev.setStyleSheet(button_stylesheet)
+        self.prev.setStyleSheet(stylesheet)
         self.prev.clicked.connect(self.on_prev_press)
 
         # Stop button
-        stop_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(STOP))))
+        stop_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(img_stop))))
         self.stop = QPushButton("", self)
         self.stop.setFixedHeight(25)
         self.stop.setFixedWidth(25)
         self.button_container_layout.addWidget(self.stop)
         self.stop.setIcon(stop_icon)
-        self.stop.setStyleSheet(button_stylesheet)
+        self.stop.setStyleSheet(stylesheet)
         self.stop.clicked.connect(self.on_stop_press)
 
         # Play/Pause button
-        toggle_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(TOGGLE))))
+        toggle_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(img_toggle))))
         self.toggle = QPushButton("", self)
         self.toggle.setCheckable(True)
         self.toggle.setFixedHeight(25)
         self.toggle.setFixedWidth(25)
         self.button_container_layout.addWidget(self.toggle)
         self.toggle.setIcon(toggle_icon)
-        self.toggle.setStyleSheet(button_stylesheet)
+        self.toggle.setStyleSheet(stylesheet)
         self.toggle.clicked.connect(self.on_play_toggle)
 
         # Song picker button
-        add_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(ADD))))
+        add_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(img_add))))
         self.add = QPushButton("", self)
         self.add.setFixedHeight(25)
         self.add.setFixedWidth(25)
         self.button_container_layout.addWidget(self.add)
         self.add.setIcon(add_icon)
-        self.add.setStyleSheet(button_stylesheet)
-        self.song_picker_window = SongPickerWindow(mpd_manager)
+        self.add.setStyleSheet(stylesheet)
+        self.song_picker_window = SongPickerWindow(
+            mpd_manager,
+            img_song_picker_background,
+            spicker_stylesheet,
+            tbar_stylesheet,
+        )
         self.add.clicked.connect(self.open_song_picker)
 
         # Next song button
-        next_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(NEXT))))
+        next_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(img_next))))
         self.next = QPushButton("", self)
         self.next.setFixedHeight(25)
         self.next.setFixedWidth(25)
         self.button_container_layout.addWidget(self.next)
         self.next.setIcon(next_icon)
-        self.next.setStyleSheet(button_stylesheet)
+        self.next.setStyleSheet(stylesheet)
         self.next.clicked.connect(self.on_next_press)
 
         # Album art button
-        album_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(ALBUM))))
+        album_icon = QIcon(QPixmap.fromImage(QImage.fromData(base64.b64decode(img_album))))
         self.album = QPushButton("", self)
         self.album.setFixedHeight(25)
         self.album.setFixedWidth(25)
         self.button_container_layout.addWidget(self.album)
         self.album.setIcon(album_icon)
-        self.album.setStyleSheet(button_stylesheet)
+        self.album.setStyleSheet(stylesheet)
         self.album_display = AlbumCoverWindow(mpd_manager, self)
         self.album.clicked.connect(self.open_album_display)
 
@@ -556,4 +520,3 @@ class MainWindow(QMainWindow):
         '''Re-defines the painEvent so the background image actually displays'''
         painter = QPainter(self)
         painter.drawPixmap(self.rect(), self.background_image)
-        self.delay_active = False

@@ -25,6 +25,10 @@ source "${VENV_DIR}/bin/activate"
 pip install .
 cat << EOF > "$WRAPPER_SCRIPT"
 #!/bin/bash
+if [ -z "$VENV_DIR" ] || [ ! -d "$VENV_DIR" ]; then
+    echo "Error: VENV_DIR is not set or does not exist or is not a directory: $VENV_DIR"
+    exit 1
+fi
 VENV_DIR="$VENV_DIR"
 source "\${VENV_DIR}/bin/activate"
 pyamp
