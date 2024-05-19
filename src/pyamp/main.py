@@ -23,9 +23,7 @@ from pyamp.config import ConfigManager
 def main():
     '''Runs Pyamp'''
     print(
-    "Pyamp 0.1.1 - Copyright (C) 2024  Ignacio Gonsalves\n"
-    "This program comes with ABSOLUTELY NO WARRANTY."
-    "\nThis is free software, and you are welcome to redistribute it under certain conditions."
+    "Pyamp 0.1.1 - Copyright (C) 2024  Ignacio Gonsalves"
     )
     config_manager = ConfigManager()
     if not config_manager.check_config():
@@ -34,8 +32,6 @@ def main():
             print("Successfully created config file/folder!")
         except Exception as e:
             print("An error ocurred while creating the config file/folder: ", e)
-    else:
-        print("Config folder and file are present.")
     app = QApplication(sys.argv)
     mpd_manager = MPDManager()
     window = MainWindow(mpd_manager)

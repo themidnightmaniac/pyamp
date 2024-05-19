@@ -127,7 +127,6 @@ class ThemeManager():
             album_img = MAIN_ALBUM
             stop_img = MAIN_STOP
             add_img = MAIN_ADD
-        print(f"Using the {self.theme} theme.")
         return(
             sp_background,
             background,
