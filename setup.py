@@ -10,7 +10,7 @@ setup(
     version=__version__,
     package_dir={'': 'src/'},
     packages=find_packages(where='src/'),
-    package_data={'resources': ['themes/main/*.css', 'themes/mpipe/*.css']},
+    package_data={'resources': ['themes/main/*.css', 'themes/mpipe/*.css', 'themes/metal/*.css']},
     install_requires=requirements,
     python_requires=">=3.11",
     author='Ignacio Gonsalves',
