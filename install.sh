@@ -35,3 +35,6 @@ pyamp
 EOF
 chmod +x "$WRAPPER_SCRIPT"
 deactivate
+mkdir $HOME/.config/pyamp
+cp src/resources/onsongchange.sh $HOME/.config/pyamp/
+chmod +x $HOME/.config/pyamp/onsongchange.sh

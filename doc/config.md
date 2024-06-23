@@ -10,7 +10,8 @@ The order of the variables alters the order they're displayed, the available var
 	 - artist<br>
 
 __run_on_song_change__:<br>
-run_on_song_change accepts any script or command, just know it will be stopped when the program closes<br>
+the specified script is ran at every status change (play, pause, stop resume), and the status is passed as an argument.<br>
+an [example script](https://pastebin.com/X1KveJi2) is located at .config/pyamp/onsongchange.sh after installation.<br>
 
 __theme__:<br>
 you can change between the following themes:<br>
@@ -18,7 +19,7 @@ main<br>
 midnight_pipe<br>
 metal<br>
 
-__Mpd Connection__:<br>
+__mpd connection__:<br>
 And also, if you changed mpd's host and/or port in mpd.conf, make sure to change it here too. <br>
 
 [Go Back](../README.md)
