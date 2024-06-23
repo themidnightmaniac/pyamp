@@ -29,7 +29,7 @@ class ConfigManager:
             'host': 'localhost',
             'port': '6600',
             'song_format': ['title', 'artist', 'album'],
-            'run_on_song_change': 'sh /home/user/.config/pyamp/onsongchange.sh',
+            'run_on_song_change': '',
             'theme': 'main',
         }
 
