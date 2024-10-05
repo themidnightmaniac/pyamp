@@ -21,9 +21,9 @@ from PySide6.QtWidgets import QLabel, QMainWindow, QVBoxLayout, QWidget
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 
-
 class AlbumCoverWindow(QMainWindow):
     '''Creates a window, displaying the current song's album cover art'''
+
     def __init__(self, mpd_manager, main_window):
         super().__init__()
 
@@ -36,11 +36,11 @@ class AlbumCoverWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
         # Create a layout for the central widget
-        layout = QVBoxLayout()
-        central_widget.setLayout(layout)
-        layout.setContentsMargins(0, 0, 0, 0)  # Remove any margins
+        self.layout = QVBoxLayout()
+        central_widget.setLayout(self.layout)
+        self.layout.setContentsMargins(0, 0, 0, 0)  # Remove any margins
 
-        # Get the mpd client
+        # Get the MPD client
         self.client = mpd_manager.get_client()
 
         # Connect the songChanged signal to the update_album_art slot
@@ -48,104 +48,109 @@ class AlbumCoverWindow(QMainWindow):
 
     def join_path(self):
         '''Joins the $MUSIC_DIR environment variable with the current song's uri'''
-        current_song_info = self.client.currentsong()
-        song_uri = current_song_info.get("file")
+        song_uri = self.client.currentsong().get("file")
         music_dir = os.environ.get("MUSIC_DIR")
 
         if song_uri and music_dir:
             absolute_song_path = os.path.join(music_dir, song_uri)
 
-            # Check if the path contains '.cue'; This is a mpd bug (or feature) that causes the path to be what's in the cue sheet.
+            # Check if the path contains '.cue'; If yes, strip the cue part to get the base directory
+            # MPD Bug (or feature) that causes some songs uri to be what's in the cue sheet. ):
             if '.cue' in absolute_song_path.lower():
-                print(absolute_song_path)
-                return None
-
+                # Strip the file name (which is the cue file) and get the parent directory
+                song_dir = os.path.dirname(absolute_song_path)
+                base_dir = os.path.dirname(song_dir)  # Get the parent directory of the cue file
+                return base_dir + '/'  # Ensure trailing slash is appended (:
             return absolute_song_path
         return None
 
-    def extract_album_art(self, file):
-        '''Extracts the album art from the current song's file metadata'''
-        if file:
-            try:
-                # Ensure the file exists and is a file
-                if not os.path.isfile(file):
-                    print(f"File not found or not a file: {file}")
-                    return None
+    def album_art_from_mpd(self, current_song):
+        '''Extracts the album art using MPD's albumart function'''
+        try:
+            album_art_data = self.client.albumart(current_song.get("file"))
 
-                # Open the audio file
-                audio = File(file)
-
-                # Extract the album art if available
-                if audio and 'covr' in audio.tags:
-                    # Get the first album art (there might be multiple)
-                    image_data = audio.tags['covr'][0]
-                    # Convert image data to PIL Image
-                    pil_image = Image.open(io.BytesIO(image_data))
-                    # Convert PIL Image to QPixmap
-                    image = QPixmap.fromImage(ImageQt.ImageQt(pil_image))
-                else:
-                    image = None
-
-                return image
-            except Exception as e:
-                print(f"Album art error: {e}. MPD probably isn't playing.")
+            # Check if album art is returned in binary format or dict with binary key
+            if isinstance(album_art_data, (bytes, dict)) and (
+                isinstance(album_art_data, dict) and 'binary' in album_art_data or isinstance(album_art_data, bytes)
+            ):
+                binary_data = album_art_data['binary'] if isinstance(album_art_data, dict) else album_art_data
+                pil_image = Image.open(io.BytesIO(binary_data))
+                return QPixmap.fromImage(ImageQt.ImageQt(pil_image))
+        except Exception:
+            pass
         return None
 
-    def update_album_art(self):
-        '''Displays the album art'''
+    def album_art_from_metadata(self, file):
+        '''Extracts the album art from the current song's file metadata using mutagen'''
+        if file and os.path.isfile(file):
+            try:
+                audio = File(file)
+                if 'covr' in audio.tags:
+                    image_data = audio.tags['covr'][0]
+                    pil_image = Image.open(io.BytesIO(image_data))
+                    return QPixmap.fromImage(ImageQt.ImageQt(pil_image))
+            except Exception:
+                pass
+        return None
 
-        # Construct the absolute path of the song
-        absolute_song_path = self.join_path()
-        if absolute_song_path:
-            song_dir = os.path.dirname(absolute_song_path)
-        else:
-            song_dir = None
-
-        # Extract the album art for the current song
-        album_art = self.extract_album_art(absolute_song_path)
-
-        # Clear the layout before adding the new album art
-        layout = self.centralWidget().layout()
-        for i in reversed(range(layout.count())):
-            layout.itemAt(i).widget().deleteLater()
-
-        # Add the album art to the layout
-        if album_art:
-            label = QLabel()
-            label.setPixmap(album_art.scaledToWidth(300, mode=Qt.SmoothTransformation))
-            label.setScaledContents(True)
-            layout.addWidget(label)
-        else:
-            if song_dir:  # Ensure song_dir is valid
-                image_path = self.find_image_in_directory(song_dir)
-
-                if image_path:
-                    pil_image = Image.open(image_path)
-                    qpixmap = QPixmap.fromImage(ImageQt.ImageQt(pil_image))
-                    label = QLabel()
-                    label.setPixmap(qpixmap.scaledToWidth(300, mode=Qt.SmoothTransformation))
-                    label.setScaledContents(True)
-                    layout.addWidget(label)
-                else:
-                    label = QLabel("No album art found.")
-                    label.setAlignment(Qt.AlignCenter)
-                    layout.addWidget(label)
-            else:
-                label = QLabel("No album art found.")
-                label.setAlignment(Qt.AlignCenter)
-                layout.addWidget(label)
-
-    def find_image_in_directory(self, directory):
+    def album_art_from_directory(self, directory):
         '''Searches for image files in the specified directory'''
         if directory:
             image_extensions = ('.jpg', '.jpeg', '.png', '.gif')
             for filename in os.listdir(directory):
-                if os.path.isfile(os.path.join(directory, filename)) and filename.lower().endswith(image_extensions):
+                if filename.lower().endswith(image_extensions):
                     return os.path.join(directory, filename)
         return None
 
+    def update_album_art(self):
+        '''Displays the album art'''
+        # Clear the layout before adding new album art
+        self.clear_layout(self.layout)
 
-    def keyPressEvent(self, event): # pylint: disable=C0103
+        # Get current song info
+        current_song = self.client.currentsong()
+        # Try setting album art using MPD's native art feature
+        album_art = self.album_art_from_mpd(current_song)
+
+        # If MPD album art retrieval fails, fall back to file metadata
+        if not album_art:
+            absolute_song_path = self.join_path()
+            album_art = self.album_art_from_metadata(absolute_song_path) if absolute_song_path else None
+
+        # If both MPD and metadata fail, try finding an image in the song's directory
+        if not album_art:
+            song_dir = os.path.dirname(absolute_song_path) if absolute_song_path else None
+            if song_dir:
+                image_path = self.album_art_from_directory(song_dir)
+                if image_path:
+                    pil_image = Image.open(image_path)
+                    album_art = QPixmap.fromImage(ImageQt.ImageQt(pil_image))
+
+        # If no album art was found (skill issue)
+        if not album_art:
+            self.show_no_album_art_found()
+        else:
+            self.show_album_art(album_art)
+
+    def clear_layout(self, layout):
+        '''Clears the given layout of all widgets'''
+        for i in reversed(range(layout.count())):
+            layout.itemAt(i).widget().deleteLater()
+
+    def show_no_album_art_found(self):
+        '''Displays a message when no album art is found'''
+        label = QLabel("No album art found.")
+        label.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(label)
+
+    def show_album_art(self, album_art):
+        '''Displays the album art in the layout'''
+        label = QLabel()
+        label.setPixmap(album_art.scaledToWidth(300, mode=Qt.SmoothTransformation))
+        label.setScaledContents(True)
+        self.layout.addWidget(label)
+
+    def keyPressEvent(self, event):  # pylint: disable=C0103
         '''Closes the window on q or escape key press'''
-        if event.key() == Qt.Key_Q or event.key() == Qt.Key_Escape:
+        if event.key() in (Qt.Key_Q, Qt.Key_Escape):
             self.close()

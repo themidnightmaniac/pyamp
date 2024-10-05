@@ -13,7 +13,9 @@ for folder in "${BIN_DIRS[@]}"; do
     fi
 done
 if [ -z "$WRAPPER_PATH" ]; then
-    echo "Error, make sure there's a valid path in your \$PATH"
+    echo "ERROR: Make sure there's a valid path in your \$PATH"
+    echo "Valid Paths:"
+    echo $BIN_DIRS
     exit 1
 fi
 if [ ! -d "$VENV_DIR" ]; then
@@ -22,7 +24,13 @@ if [ ! -d "$VENV_DIR" ]; then
 fi
 WRAPPER_SCRIPT=$WRAPPER_PATH
 source "${VENV_DIR}/bin/activate"
-pip install .
+if [[ $1 = "-e" ]]; then
+    echo "WARNING: Installing in editable mode!"
+    pip install -e .
+else
+    pip install .
+fi
+
 cat << EOF > "$WRAPPER_SCRIPT"
 #!/bin/bash
 if [ -z "$VENV_DIR" ] || [ ! -d "$VENV_DIR" ]; then
