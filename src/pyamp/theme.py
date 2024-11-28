@@ -15,6 +15,7 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 from pyamp.config import ConfigManager
+# Unfortunately themes still need to be hardcoded
 from resources.themes.main.images import(
     MAIN_BACKGROUND,
     MAIN_SONG_PICKER_BACKGROUND,
@@ -55,7 +56,7 @@ class ThemeManager():
         config_manager = ConfigManager()
         self.theme = config_manager.get_value("theme")
 
-    def read_css_file(self, relative_path):
+    def read_css(self, relative_path):
         '''Placeholder'''
         # Get the directory of the current script
         current_dir = os.path.dirname(__file__)
@@ -72,10 +73,10 @@ class ThemeManager():
     def get_theme(self):
         '''Returns the stylesheet and images for each theme'''
         if self.theme == "main":
-            stylesheet = self.read_css_file('../resources/themes/main/styles.css')
-            tbar_stylesheet = self.read_css_file('../resources/themes/main/title_bar.css')
-            spicker_stylesheet = self.read_css_file('../resources/themes/main/song_picker.css')
-            options_stylesheet = self.read_css_file('../resources/themes/main/options.css')
+            stylesheet = self.read_css('../resources/themes/main/styles.css')
+            tbar_stylesheet = self.read_css('../resources/themes/main/title_bar.css')
+            spicker_stylesheet = self.read_css('../resources/themes/main/song_picker.css')
+            options_stylesheet = self.read_css('../resources/themes/main/options.css')
             sp_background = MAIN_SONG_PICKER_BACKGROUND
             background = MAIN_BACKGROUND
             op_background = MAIN_OPTIONS_BACKGROUND
@@ -86,10 +87,10 @@ class ThemeManager():
             stop_img = MAIN_STOP
             add_img = MAIN_ADD
         elif self.theme == "midnight_pipe":
-            stylesheet = self.read_css_file('../resources/themes/mpipe/styles.css')
-            tbar_stylesheet = self.read_css_file('../resources/themes/mpipe/title_bar.css')
-            spicker_stylesheet = self.read_css_file('../resources/themes/mpipe/song_picker.css')
-            options_stylesheet = self.read_css_file('../resources/themes/mpipe/options.css')
+            stylesheet = self.read_css('../resources/themes/mpipe/styles.css')
+            tbar_stylesheet = self.read_css('../resources/themes/mpipe/title_bar.css')
+            spicker_stylesheet = self.read_css('../resources/themes/mpipe/song_picker.css')
+            options_stylesheet = self.read_css('../resources/themes/mpipe/options.css')
             sp_background = MPIPE_SONG_PICKER_BACKGROUND
             op_background = MPIPE_OPTIONS_BACKGROUND
             background = MPIPE_BACKGROUND
@@ -100,10 +101,10 @@ class ThemeManager():
             stop_img = MPIPE_STOP
             add_img = MPIPE_ADD
         elif self.theme == "metal":
-            stylesheet = self.read_css_file('../resources/themes/metal/styles.css')
-            tbar_stylesheet = self.read_css_file('../resources/themes/metal/title_bar.css')
-            spicker_stylesheet = self.read_css_file('../resources/themes/metal/song_picker.css')
-            options_stylesheet = self.read_css_file('../resources/themes/metal/options.css')
+            stylesheet = self.read_css('../resources/themes/metal/styles.css')
+            tbar_stylesheet = self.read_css('../resources/themes/metal/title_bar.css')
+            spicker_stylesheet = self.read_css('../resources/themes/metal/song_picker.css')
+            options_stylesheet = self.read_css('../resources/themes/metal/options.css')
             sp_background = METAL_SONG_PICKER_BACKGROUND
             op_background = METAL_OPTIONS_BACKGROUND
             background = METAL_BACKGROUND
@@ -114,10 +115,10 @@ class ThemeManager():
             stop_img = METAL_STOP
             add_img = METAL_ADD
         else:
-            stylesheet = self.read_css_file('../resources/themes/main/styles.css')
-            tbar_stylesheet = self.read_css_file('../resources/themes/main/title_bar.css')
-            spicker_stylesheet = self.read_css_file('../resources/themes/main/song_picker.css')
-            options_stylesheet = self.read_css_file('../resources/themes/main/options.css')
+            stylesheet = self.read_css('../resources/themes/main/styles.css')
+            tbar_stylesheet = self.read_css('../resources/themes/main/title_bar.css')
+            spicker_stylesheet = self.read_css('../resources/themes/main/song_picker.css')
+            options_stylesheet = self.read_css('../resources/themes/main/options.css')
             sp_background = MAIN_SONG_PICKER_BACKGROUND
             op_background = MAIN_OPTIONS_BACKGROUND
             background = MAIN_BACKGROUND

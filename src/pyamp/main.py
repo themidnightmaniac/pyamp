@@ -25,6 +25,7 @@ def main():
     print(
     "Pyamp 0.1.6 - Copyright (C) 2024  Ignacio Gonsalves"
     )
+    # Load config
     config_manager = ConfigManager()
     if not config_manager.check_config():
         try:
@@ -32,10 +33,14 @@ def main():
             print("Successfully created config file/folder!")
         except Exception as e:
             print("An error occurred while creating the config file/folder: ", e)
+    # Set app
     app = QApplication(sys.argv)
+    # Set the mpd sesh
     mpd_manager = MPDManager()
+    # Set the window and open pyamp
     window = MainWindow(mpd_manager)
     window.show()
+    # Exit when finished
     sys.exit(app.exec())
 
 

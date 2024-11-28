@@ -128,8 +128,11 @@ class SongPickerWindow(QMainWindow):
 
     def fetch_songs(self):
         '''Fetch songs from MPD'''
+        # Clear the widget
         self.list_widget.clear()
+        # Get all songs
         songs = self.client.listallinfo()
+        # Gotta Display 'em all
         for song in songs:
             title = song.get("title", None)
             if title:
@@ -141,6 +144,7 @@ class SongPickerWindow(QMainWindow):
         search_text = self.search_bar.text().lower()
         for index in range(self.list_widget.count()):
             item = self.list_widget.item(index)
+            # Hide all items that dont match the search string
             if search_text in item.text().lower():
                 item.setHidden(False)
             else:

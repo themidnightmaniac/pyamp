@@ -460,7 +460,7 @@ class MainWindow(QMainWindow):
         '''Skips song and changes play state'''
         try:
             self.client.next()
-            # Sets the playstate and button to "play"
+            # Set the playstate and button to "play"
             if self.mpd_status.get("state") != "play":
                 self.toggle.setChecked(True)
                 self.playstate = "Playing:"
@@ -471,7 +471,7 @@ class MainWindow(QMainWindow):
         '''Rewinds song and changes play state'''
         try:
             self.client.previous()
-            # Sets the playstate and button to "play"
+            # Set the playstate and play button to "play"
             if self.mpd_status.get("state") != "play":
                 self.toggle.setChecked(True)
                 self.playstate = "Playing:"
@@ -487,19 +487,19 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event): # pylint: disable=invalid-name,unused-argument
         ''''Re-defines closeEvent to properly close the program'''
-        # Closes custom command ran by user if it is still open
+        # Close custom command ran by user if it is still open
         if subprocess_instance and subprocess_instance.poll() is None:
             subprocess_instance.terminate()
-        # Prints the number of songs played
+        # Print the number of songs played
         print("Songs played:", self.songs_played)
-        # Closes mpd connection
+        # Close mpd connection
         self.client.disconnect()
-        # Stops timers
+        # Stop timers
         self.progress_timer.stop()
         self.scroll_timer.stop()
         self.clock_timer.stop()
         self.check_song_change_timer.stop()
-        # Quits qt
+        # Quit qt
         qApp.quit()  # pylint: disable=undefined-variable
 
     def open_song_picker(self):
@@ -514,7 +514,7 @@ class MainWindow(QMainWindow):
 
     def update_clock_timer(self):
         '''Runs clock update every minute'''
-        # Gets the current time
+        # Get the current time
         current_time = localtime()
         # Calculate remaining seconds until next minute
         remaining_seconds = 60 - current_time.tm_sec
