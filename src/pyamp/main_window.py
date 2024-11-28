@@ -280,7 +280,7 @@ class MainWindow(QMainWindow):
         self.album.setIcon(album_icon)
         self.album.setStyleSheet(stylesheet)
         self.album_display = AlbumCoverWindow(mpd_manager, self)
-        self.album.clicked.connect(self.open_album_display)
+        self.album.clicked.connect(lambda: self.album_display.show()) # pylint: disable=W0108
 
         # Timer checking for song changes
         self.check_song_change_timer = QTimer(self)
@@ -507,10 +507,6 @@ class MainWindow(QMainWindow):
         self.song_picker_window.clear_selection()
         self.song_picker_window.show()
         self.song_picker_window.window_close.connect(self.song_changed)
-
-    def open_album_display(self):
-        '''Opens the album display'''
-        self.album_display.show()
 
     def update_clock_timer(self):
         '''Runs clock update every minute'''
