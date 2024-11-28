@@ -88,7 +88,7 @@ class MainWindow(QMainWindow):
         self.song_order = self.config_manager.get_value("song_format")
         self.user_command = self.config_manager.get_value("run_on_song_change")
 
-        # MPD and clock stuff/variables
+        # MPD setup
         self.client = mpd_manager.get_client()
         self.mpd_status = self.client.status()
         self.playstate = ""
@@ -112,6 +112,8 @@ class MainWindow(QMainWindow):
                 )
 
                 self.song_format = "{playstate} {title} - {artist} - {album}"
+
+        # Clock setup
         self.current_time = strftime("%H:%M")
 
         # Central widget config
@@ -285,23 +287,23 @@ class MainWindow(QMainWindow):
         self.check_song_change_timer.timeout.connect(self.check_song_change)
         self.previous_song = None
 
-        # Skibidi rizz
+        # duhh
         self.startup()
 
     def startup(self):
         '''Runs/Starts all the music related functions'''
-        # Checks mpd status
+        # Check mpd status
         if self.mpd_status.get("state") == "play":
-            # Sets status and button to "play"
+            # Set status and button to "play"
             self.toggle.setChecked(True)
             self.playstate = "Playing:"
         elif self.mpd_status.get("state") == "pause":
-            # Sets status and button to "pause"
+            # Set status and button to "pause"
             self.toggle.setChecked(False)
             self.playstate = "Paused:"
         else:
             self.playstate = "Not Playing!"
-        # Essentially starts the song and clock related stuff
+        # Start timers
         self.song_changed()
         self.check_song_change_timer.start(1000)
         self.scroll_timer.start(80)
@@ -315,21 +317,21 @@ class MainWindow(QMainWindow):
             # Check for song change
             current_song = self.client.currentsong()
             if current_song != self.previous_song:
-                # Updates the current song info
+                # Update the current song info
                 self.previous_song = current_song
                 self.songChanged.emit()
 
-                # Tries to run run_on_song_change command
+                # Try to run run_on_song_change command
                 self.run_user_command("song_change")
 
-                # Skips the first current song var update
+                # Skip the first current song var update
                 if self.songs_played == 0:
                     # If no song has played yet, increment the counter by 1
                     self.songs_played += 1
                 else:
-                    # Updates the song display
+                    # Update the song display
                     self.song_changed()
-                    # Increments the songs played counter on every song change
+                    # Increment the songs played counter on every song change
                     self.songs_played += 1
 
         except Exception as e:
@@ -352,13 +354,13 @@ class MainWindow(QMainWindow):
         try:
             status = self.client.status()
             if status.get("state") == "stop":
-                # Sets the current song variable
+                # Set the current song variable
                 self.current_song = "Not Playing!"
             else:
-                # Fetches MPD's current song info
+                # Fetch MPD's current song info
                 current_song_info = self.client.currentsong()
 
-                # Sets the current song variable
+                # Set the current song variable
                 self.current_song_title = current_song_info.get("title")
                 self.current_artist = current_song_info.get("artist")
                 self.current_album = current_song_info.get("album")
@@ -371,7 +373,7 @@ class MainWindow(QMainWindow):
                     album=self.current_album,
                 )
 
-            # Returns the current song variable
+            # Return the current song variable
             return self.current_song
         except Exception as e:
             print(f"An error occurred while getting current song info: {e}")
