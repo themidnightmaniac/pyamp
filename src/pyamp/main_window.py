@@ -28,7 +28,7 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QVBoxLayout
-)  
+)
 from PySide6.QtGui import QPixmap, QPainter, QFont, QIcon, QImage
 from PySide6.QtCore import QTimer, Qt, Signal
 from pyamp.song_picker import SongPickerWindow
@@ -345,7 +345,7 @@ class MainWindow(QMainWindow):
                 with subprocess.Popen(command.split()) as subprocess_instance:
                     subprocess_instance.communicate()
             except Exception as e:
-                print("An error ocurred while running the custom command: ", e)
+                print("An error occurred while running the custom command: ", e)
 
     def get_current_song_info(self):
         '''Gets all the current song info'''

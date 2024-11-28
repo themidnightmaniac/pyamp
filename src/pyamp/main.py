@@ -31,7 +31,7 @@ def main():
             config_manager.create_config()
             print("Successfully created config file/folder!")
         except Exception as e:
-            print("An error ocurred while creating the config file/folder: ", e)
+            print("An error occurred while creating the config file/folder: ", e)
     app = QApplication(sys.argv)
     mpd_manager = MPDManager()
     window = MainWindow(mpd_manager)
