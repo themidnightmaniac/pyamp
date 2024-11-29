@@ -22,7 +22,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 
 class AlbumCoverWindow(QMainWindow):
-    '''Creates a window, displaying the current song's album cover art'''
+    '''Window containing the current song's cover'''
 
     def __init__(self, mpd_manager, main_window):
         super().__init__()
@@ -47,7 +47,7 @@ class AlbumCoverWindow(QMainWindow):
         main_window.songChanged.connect(self.update_album_art)
 
     def join_path(self):
-        '''Joins the $MUSIC_DIR environment variable with the current song's uri'''
+        '''Return the current song's full path'''
         song_uri = self.client.currentsong().get("file")
         music_dir = os.environ.get("MUSIC_DIR")
 
@@ -65,7 +65,7 @@ class AlbumCoverWindow(QMainWindow):
         return None
 
     def album_art_from_mpd(self, current_song):
-        '''Extracts the album art using MPD's albumart function'''
+        '''Return the art for the current song using mpd as a QPixmap'''
         try:
             album_art_data = self.client.albumart(current_song.get("file"))
 
@@ -81,7 +81,7 @@ class AlbumCoverWindow(QMainWindow):
         return None
 
     def album_art_from_metadata(self, file):
-        '''Extracts the album art from the current song's file metadata using mutagen'''
+        '''Return the art for the current song using metadata as a QPixmap'''
         if file and os.path.isfile(file):
             try:
                 audio = File(file)
@@ -103,7 +103,7 @@ class AlbumCoverWindow(QMainWindow):
         return None
 
     def update_album_art(self):
-        '''Displays the album art'''
+        '''Get the album art for the current song and call show_album_art on it'''
         # Clear the layout before adding new album art
         self.clear_layout(self.layout)
 
@@ -133,24 +133,24 @@ class AlbumCoverWindow(QMainWindow):
             self.show_album_art(album_art)
 
     def clear_layout(self, layout):
-        '''Clears the given layout of all widgets'''
+        '''Clear all widgets from the given layout'''
         for i in reversed(range(layout.count())):
             layout.itemAt(i).widget().deleteLater()
 
     def show_no_album_art_found(self):
-        '''Displays a message when no album art is found'''
+        '''Display "No album art found." message in the parent widget'''
         label = QLabel("No album art found.")
         label.setAlignment(Qt.AlignCenter)
         self.layout.addWidget(label)
 
     def show_album_art(self, album_art):
-        '''Displays the album art in the layout'''
+        '''Set the background of the parent layout as the given image (QPixmap)'''
         label = QLabel()
         label.setPixmap(album_art.scaledToWidth(300, mode=Qt.SmoothTransformation))
         label.setScaledContents(True)
         self.layout.addWidget(label)
 
     def keyPressEvent(self, event):  # pylint: disable=C0103
-        '''Closes the window on q or escape key press'''
+        '''Close the window on q or esc key press'''
         if event.key() in (Qt.Key_Q, Qt.Key_Escape):
             self.close()

@@ -38,5 +38,5 @@ class MPDManager:
             sys.exit()
 
     def get_client(self):
-        '''Returns the MPD client'''
+        '''Return the MPD client'''
         return self.client

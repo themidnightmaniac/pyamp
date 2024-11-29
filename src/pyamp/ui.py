@@ -26,13 +26,13 @@ from PySide6.QtCore import Qt
 from pyamp.options import OptionsWindow
 
 class CreateSpacer(QSpacerItem):
-    '''Creates a spacer item'''
+    '''Spacer item'''
     def __init__(self, width, height, size_policy_horizontal, size_policy_vertical): # pylint: disable=W0246
         super().__init__(width, height, size_policy_horizontal, size_policy_vertical)
 
 
 class NonSelectableLineEdit(QLineEdit):
-    '''Creates a non selectable textbox'''
+    '''Non selectable textbox'''
     def __init__(self, *args, **kwargs): # pylint: disable=W0246
         super().__init__(*args, **kwargs)
 
@@ -46,7 +46,7 @@ class NonSelectableLineEdit(QLineEdit):
 
 
 class createTitleBar(QWidget): # pylint: disable=C0103
-    '''Creates a title bar'''
+    '''Title bar'''
     def __init__(self, parent, title, tbar_stylesheet, mpd_manager, img_op_background, options_stylesheet, button=True):
         super().__init__(parent)
         self.title = title
@@ -55,7 +55,7 @@ class createTitleBar(QWidget): # pylint: disable=C0103
         self.init_ui(mpd_manager, img_op_background, options_stylesheet)
 
     def init_ui(self, mpd_manager, img_op_background, options_stylesheet):
-        '''Creates the title bar'''
+        '''Title bar and other needed elements'''
         title_bar_layout = QHBoxLayout(self)
         title_bar_layout.setContentsMargins(5, 4, 5, 0)
         # Close button (if enabled)
@@ -89,5 +89,5 @@ class createTitleBar(QWidget): # pylint: disable=C0103
             title_bar_layout.addWidget(title_label)
 
     def open_options(self):
-        '''Opens the playback options window'''
-        self.options_window.show()
+        '''Open options window'''
+        self.options.show()

@@ -27,7 +27,7 @@ from PySide6.QtCore import Qt
 
 
 class OptionsWindow(QMainWindow):
-    '''Creates a window for changing MPD's playback options'''
+    '''Window exposing MPD's playback options'''
 
     def __init__(self, mpd_manager, img_op_background, options_stylesheet):
         super().__init__()
@@ -119,7 +119,7 @@ class OptionsWindow(QMainWindow):
         self.installEventFilter(self)
 
     def button_action(self, command, button, text, mode):
-        '''Changes the button's check state, label and/or changes MPD's playback options'''
+        '''Toggle the option based on the given mode, updates the text for the given button'''
         if mode == "check":
             state = self.client_status.get(text)
             if state == "1":
@@ -143,11 +143,11 @@ class OptionsWindow(QMainWindow):
             self.close()
 
     def keyPressEvent(self, event): # pylint: disable=C0103
-        '''Closes the window on q or escape key press'''
+        '''Close the window on q or esc key press'''
         if event.key() == Qt.Key_Q or event.key() == Qt.Key_Escape:
             self.close()
 
     def paintEvent(self, event): # pylint: disable=invalid-name,unused-argument
-        '''Re-defines the painEvent so the background image actually displays'''
+        '''Draw the window with a background image'''
         painter = QPainter(self)
         painter.drawPixmap(self.rect(), self.background_image)

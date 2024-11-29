@@ -51,7 +51,7 @@ from resources.themes.metal.images import(
 )
 
 class ThemeManager():
-    '''Manages the program themes'''
+    '''Manage the themes for pyamp'''
     def __init__(self):
         config_manager = ConfigManager()
         self.theme = config_manager.get_value("theme")
@@ -71,7 +71,7 @@ class ThemeManager():
         return css_content
 
     def get_theme(self):
-        '''Returns the stylesheet and images for each theme'''
+        '''Returns the stylesheet and images uri for the given theme'''
         if self.theme == "main":
             stylesheet = self.read_css('../resources/themes/main/styles.css')
             tbar_stylesheet = self.read_css('../resources/themes/main/title_bar.css')

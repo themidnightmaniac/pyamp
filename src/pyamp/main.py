@@ -21,7 +21,7 @@ from pyamp.config import ConfigManager
 
 
 def main():
-    '''Runs Pyamp'''
+    '''Run Pyamp'''
     print(
     "Pyamp 0.1.6 - Copyright (C) 2024  Ignacio Gonsalves"
     )
