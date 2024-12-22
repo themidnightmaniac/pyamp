@@ -134,7 +134,7 @@ class MainWindow(QMainWindow):
         self.layout.addItem(self.spacer2, 1, 3, 2, 1)
 
         # Title bar
-        self.title_bar = createTitleBar(self, "Pyamp 0.1.6", tbar_stylesheet, mpd_manager, img_op_background, options_stylesheet, button=True)
+        self.title_bar = createTitleBar(self, "Pyamp 0.1.7", tbar_stylesheet, mpd_manager, img_op_background, options_stylesheet, button=True)
         self.setMenuWidget(self.title_bar)
 
         # Containers
