@@ -1,36 +1,30 @@
-<h3 align="center"><img src="img/doc/pyamp_logo_scaled.png" width="700px" alt="pyamp logo"></h3>
+<h3 align="center"><img src="img/doc/pyamp_logo_scaled.png" width="700px" alt="Pyamp logo"></h3>
 <h2 align="center">Minimal Python MPD Client</h2>
 
-Pyamp is a minimal mpd client written in python, using the pyside6 and mpd2 libraries.<br>
+Pyamp is a minimal MPD client written in Python, using the PySide6 and mpd2 libraries.  
 <br>
-<img src="img/doc/pyamp_main1.png" alt="main window" width="400px" align="right" style="image-rendering: pixelated;">
+
+<img src="img/doc/pyamp_main1.png" alt="Main window" width="400px" align="right" style="image-rendering: pixelated;">
 
 ### What it can do:
-<ul>
-<li>Pause, Play, Skip, Rewind and Stop songs.</li>
-<li>Display album cover art.</li>
-<li>Add songs, as well as clearing the queue.</li>
-<li>Display the song currently playing.</li>
-<li>Display the song progress using a bar and the actual time elapsed/left.
-<li>Change MPD's volume using a slider.</li>
-<li>Display the time (clock)</li>
-<li>Execute any command on song change</li>
-</ul>
+- **Pause**, **Play**, **Skip**, **Rewind**, and **Stop** songs.
+- Display **album cover art**.
+- Add songs and **clear the queue**.
+- Display the **currently playing song**.
+- Show **song progress** with a progress bar and display the actual time elapsed/left.
+- Control MPD's **volume** using a slider.
+- Display the **current time (clock)**.
+- Execute any command on **song change**.
 
 ### What it can't do (yet):
-<ul>
-<li>Display the queue.</li>
-<li>Interact with playlists.</li>
-<li>Remove single songs.</li>
-</ul>
+- Cannot display the queue.
+- Cannot interact with **playlists**.
+- Cannot **remove individual songs**.
 
-### What it will not do:
-<ul>
-<li>Fetch lyrics from the internet.</li>
-<li>Get you a girlfriend.</li>
-</ul>
-This is my first ever project in any programming language, so the code is very messy and unoptimized. If you want to contribute, fork or even remake Pyamp you are welcome.<br>
-Also if you find any bug or have a suggestion, feel free to open an issue and i'll be happy to help.<br>
-<br>
+### What Pyamp will **not** do:
+- **Fetch lyrics** from the internet.
+- **Find you a girlfriend**.  
 
+This is my first ever project in any programming language, so the code is quite messy and unoptimized. If you'd like to contribute, feel free to fork and open a pr. Contributions are always welcome.  
+If you find any bugs or have suggestions, please open an issue, and I'll be happy to help!  
 ### More: [Installation](doc/install.md) | [Configuration](doc/config.md) | [Screenshots](doc/screenshots.md)

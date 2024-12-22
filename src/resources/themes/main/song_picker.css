@@ -13,18 +13,23 @@ QPushButton:pressed{
 QPushButton:checked {
 	background-color: transparent;
 }
+
 QListWidget {
 	background-color: black;
 	color: dodgerblue;
-	border: 1px solid dodgerblue
+	border: 1px solid dodgerblue;
+	padding-bottom: 1px;
+	padding-right: 1px;
 }
 QListWidget::item:selected {
 	color: white;
 	background-color: black;
 }
+
 QScrollBar:vertical {
 	background-color: black;
 	border-left: 1px solid dodgerblue;
+	border-bottom: 1px solid dodgerblue;
 	width: 15px;
 }
 QScrollBar::handle:vertical {
@@ -36,6 +41,24 @@ QScrollBar::handle:vertical {
 QScrollBar::handle:vertical::active {
 	border-top: 2px solid dodgerblue;
 	border-bottom: 2px solid dodgerblue;
+
+}
+
+QScrollBar:horizontal {
+	background-color: black;
+	border-top: 1px solid dodgerblue;
+	border-right: 1px solid dodgerblue;
+	height: 15px;
+}
+QScrollBar::handle:horizontal {
+	background-color: black;
+	border-right: 1px solid dodgerblue;
+	border-left: 1px solid dodgerblue;
+	margin: -4px 0;
+}
+QScrollBar::handle:horizontal::active {
+	border-right: 2px solid dodgerblue;
+	border-left: 2px solid dodgerblue;
 }
 
 QScrollBar::add-line:vertical,
@@ -43,6 +66,13 @@ QScrollBar::sub-line:vertical {
 	width: 0;
 	height: 0;
 }
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+	width: 0;
+	height: 0;
+}
+
 QLineEdit{
 	border: 1px solid dodgerblue;
 	border-radius: 0;

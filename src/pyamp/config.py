@@ -18,7 +18,7 @@ import yaml
 
 
 class ConfigManager:
-    '''Manages the program configuration and configuration file'''
+    '''Load a config file or create one with default values'''
     def __init__(self, config_file="config.yaml"):
         # Set the config file
         self.config_file = os.path.expanduser("~/.config/pyamp/" + config_file)
@@ -34,39 +34,38 @@ class ConfigManager:
         }
 
     def create_config_folder(self):
-        '''Creates the config folder'''
+        '''Create folder for the config file'''
         if not os.path.exists(self.config_folder):
             os.makedirs(self.config_folder)
 
     def create_config_file(self):
-        '''Creates the config file'''
+        '''Create the config file'''
         if not os.path.exists(self.config_file):
             with open(self.config_file, 'w', encoding="utf-8") as f:
                 yaml.dump(self.default_config, f)
 
     def create_config(self):
-        '''If theres no config file or folder, create both'''
+        '''Create config file and folder if they dont exist'''
         if not os.path.exists(self.config_folder) or not os.path.exists(self.config_file):
             self.create_config_folder()
             self.create_config_file()
 
     def check_config(self):
-        '''Checks if config file and folder exist'''
+        '''Check if the config file and folder exist'''
         return os.path.exists(self.config_folder) and os.path.exists(self.config_file)
 
     def load_config(self):
-        '''Loads the config file'''
+        '''Load the config file'''
         with open(self.config_file, 'r', encoding="utf-8") as f:
             config_data = yaml.safe_load(f)
         return config_data
 
     def get_value(self, key):
-        '''Gets the value from the config file key/item'''
+        '''Get the value from a key in the config file'''
         config_data = self.load_config()
-        # Returns a list if key is song_format
-        # This ensures the value isn't returned empty or overwritten with the default
-        # if the user changes it [value].
-        # I love lasagna
+        # Return a list if key is song_format
+        # This ensures the value isn't returned empty or overwritten with the default value
+        # if the user changes it.
         if key == 'song_format':
             data = config_data.get(key, self.default_config[key]) or self.default_config[key]
         else:

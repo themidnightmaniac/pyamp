@@ -19,14 +19,17 @@ from pyamp.config import ConfigManager
 
 
 class MPDManager:
-    '''Manages the MPD client/connection'''
+    '''Creates the MPD client'''
     def __init__(self):
 
+        # Load config
         self.config_manager = ConfigManager()
         self.config_data = self.config_manager.load_config()
+        # Set host and port from config
         self.host = self.config_data.get('host')
         self.port = self.config_data.get('port')
 
+        # Open client
         self.client = MPDClient()
         try:
             self.client.connect(self.host, self.port)
@@ -35,5 +38,5 @@ class MPDManager:
             sys.exit()
 
     def get_client(self):
-        '''Returns the MPD client'''
+        '''Return the MPD client'''
         return self.client

@@ -1,25 +1,26 @@
-
 <h2 align="center">Configuration</h2>
 
-With your favorite editor, edit the config file found at ~/.config/pyamp/config.yaml.<br>
+To configure Pyamp, open the config file located at `~/.config/pyamp/config.yaml` using your favorite editor.  
+<br>
 
-__song_format__:<br>
-The order of the variables alters the order they're displayed, the available vars, for now, are:<br>
-	 - title<br>
-	 - album<br>
-	 - artist<br>
+### `song_format`:
+The order of the variables determines how they are displayed. The available variables, for now, are:
+- `title`
+- `album`
+- `artist`
 
-__run_on_song_change__:<br>
-the specified script is ran at every status change (play, pause, stop resume), and the status is passed as an argument.<br>
-an [example script](https://pastebin.com/X1KveJi2) is located at .config/pyamp/onsongchange.sh after installation.<br>
+### `run_on_song_change`:
+The specified script is executed on every status change (play, pause, stop, resume), and the current status is passed as an argument.  
+An [example script](https://pastebin.com/X1KveJi2) can be found at `.config/pyamp/onsongchange.sh` after installation.
 
-__theme__:<br>
-you can change between the following themes:<br>
-main<br>
-midnight_pipe<br>
-metal<br>
+### `theme`:
+You can choose from the following themes:
+- `main`
+- `midnight_pipe`
+- `metal`
 
-__mpd connection__:<br>
-And also, if you changed mpd's host and/or port in mpd.conf, make sure to change it here too. <br>
+### mpd connection:
+If you’ve changed MPD's host and/or port in `mpd.conf`, or if you're interacting with a remote machine, make sure to update the `host` and `port` values in the configuration file as well.  
+<br>
 
 [Go Back](../README.md)

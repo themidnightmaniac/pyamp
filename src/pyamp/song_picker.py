@@ -30,14 +30,14 @@ from PySide6.QtCore import Qt, Signal
 from pyamp.ui import createTitleBar
 
 class SongItem(QListWidgetItem):
-    '''Creates a song item'''
+    '''Song item'''
     def __init__(self, title, uri):
         super().__init__(title)
         self.uri = uri
 
 
 class SongPickerWindow(QMainWindow):
-    '''Creates a window for the song picker'''
+    '''Window to select and add songs to the queue'''
     window_close = Signal()
 
     def __init__(self, mpd_manager, img_song_picker_background, spicker_stylesheet, tbar_stylesheet):
@@ -117,19 +117,22 @@ class SongPickerWindow(QMainWindow):
         self.fetch_songs()
 
     def clear_queue(self):
-        '''Clears the MPD queue'''
+        '''Clear the MPD queue'''
         self.client.clear()
 
     def paintEvent(self, event): # pylint: disable=invalid-name,unused-argument
-        '''Re-defines the painEvent so the background image actually displays'''
+        '''Draw the window with a background image'''
         painter = QPainter(self)
         painter.drawPixmap(self.rect(), self.background_image)
         self.delay_active = False
 
     def fetch_songs(self):
         '''Fetch songs from MPD'''
+        # Clear the widget
         self.list_widget.clear()
+        # Get all songs
         songs = self.client.listallinfo()
+        # Gotta Display 'em all
         for song in songs:
             title = song.get("title", None)
             if title:
@@ -137,17 +140,18 @@ class SongPickerWindow(QMainWindow):
                 self.list_widget.addItem(item)
 
     def filter_options(self):
-        '''Filters songs by search'''
+        '''Filter displayed songs by search'''
         search_text = self.search_bar.text().lower()
         for index in range(self.list_widget.count()):
             item = self.list_widget.item(index)
+            # Hide all items that dont match the search string
             if search_text in item.text().lower():
                 item.setHidden(False)
             else:
                 item.setHidden(True)
 
     def add_selected_songs(self):
-        '''Adds selected songs to the playlist'''
+        '''Add selected songs to the queue'''
         selected_indexes = [index.row() for index in self.list_widget.selectedIndexes()]
         selected_songs = []
         for index in selected_indexes:
@@ -157,16 +161,16 @@ class SongPickerWindow(QMainWindow):
             self.client.add(song)
 
     def clear_selection(self):
-        '''Clears the song selection'''
+        '''Clear the song selection'''
         self.list_widget.clearSelection()
 
     def on_ok_clicked(self):
-        '''Closes the window and updates song display when OK is pressed'''
+        '''Close the window and updates song display when OK is pressed'''
         self.window_close.emit()
         self.add_selected_songs()
         self.close()
 
     def close_song_picker(self):
-        '''Closes the song picker window'''
+        '''Close the song picker window'''
         self.close()
         self.window_close.emit()
