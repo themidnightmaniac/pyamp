@@ -1,8 +1,12 @@
-<h2 align="center">Installation</h2>
+## Installation
 
-First, install Python using your system's package manager. <br>
+First, install the following packages using your system's package manager. <br>
+- python terminus-font xcb-util-cursor    # Arch-based
+- python terminus-fonts xcb-util-cursor   # Fedora
+- python xfonts-terminus libxcb-cursor0   # Debian-based
 
-Then, clone the repository and navigate into the cloned directory:<br>
+Then, clone the repository and navigate into the cloned directory:
+
 ``` Bash
 $ git clone https://github.com/themidnightmaniac/pyamp.git
 $ cd pyamp

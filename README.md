@@ -25,6 +25,5 @@ Pyamp is a minimal MPD client written in Python, using the PySide6 and mpd2 libr
 - **Fetch lyrics** from the internet.
 - **Find you a girlfriend**.  
 
-This is my first ever project in any programming language, so the code is quite messy and unoptimized. If you'd like to contribute, feel free to fork and open a pr. Contributions are always welcome.  
-If you find any bugs or have suggestions, please open an issue, and I'll be happy to help!  
+If you find any bugs or have suggestions, please open an issue, and I'll be happy to help.
 ### More: [Installation](doc/install.md) | [Configuration](doc/config.md) | [Screenshots](doc/screenshots.md)
