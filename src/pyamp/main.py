@@ -1,5 +1,5 @@
 #    Pyamp - Minimal MPD client written in Python using Qt
-#    Copyright (C) 2024  Ignacio Gonsalves
+#    Copyright (C) 2025  Ignacio Gonsalves
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ from pyamp.config import ConfigManager
 def main():
     '''Run Pyamp'''
     print(
-    "Pyamp 0.1.7 - Copyright (C) 2024  Ignacio Gonsalves"
+    "Pyamp 1.0.0 - Copyright (C) 2024  Ignacio Gonsalves"
     )
     # Load config
     config_manager = ConfigManager()

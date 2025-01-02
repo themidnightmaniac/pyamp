@@ -1,5 +1,5 @@
 #    Pyamp - Minimal MPD client written in Python using Qt
-#    Copyright (C) 2024  Ignacio Gonsalves
+#    Copyright (C) 2025  Ignacio Gonsalves
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by

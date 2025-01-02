@@ -1,5 +1,5 @@
 #    Pyamp - Minimal MPD client written in Python using Qt
-#    Copyright (C) 2024  Ignacio Gonsalves
+#    Copyright (C) 2025  Ignacio Gonsalves
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -134,7 +134,7 @@ class MainWindow(QMainWindow):
         self.layout.addItem(self.spacer2, 1, 3, 2, 1)
 
         # Title bar
-        self.title_bar = createTitleBar(self, "Pyamp 0.1.7", tbar_stylesheet, mpd_manager, img_op_background, options_stylesheet, button=True)
+        self.title_bar = createTitleBar(self, "Pyamp 1.0.0", tbar_stylesheet, mpd_manager, img_op_background, options_stylesheet, button=True)
         self.setMenuWidget(self.title_bar)
 
         # Containers
