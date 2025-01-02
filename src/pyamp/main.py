@@ -23,7 +23,7 @@ from pyamp.config import ConfigManager
 def main():
     '''Run Pyamp'''
     print(
-    "Pyamp 1.0.0 - Copyright (C) 2024  Ignacio Gonsalves"
+    "Pyamp 1.1.0 - Copyright (C) 2024  Ignacio Gonsalves"
     )
     # Load config
     config_manager = ConfigManager()
