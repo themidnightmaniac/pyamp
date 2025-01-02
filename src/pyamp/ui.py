@@ -58,6 +58,7 @@ class createTitleBar(QWidget): # pylint: disable=C0103
         '''Title bar and other needed elements'''
         title_bar_layout = QHBoxLayout(self)
         title_bar_layout.setContentsMargins(5, 4, 5, 0)
+
         # Close button (if enabled)
         if self.button:
             self.options_window = OptionsWindow(mpd_manager, img_op_background, options_stylesheet)
@@ -90,4 +91,4 @@ class createTitleBar(QWidget): # pylint: disable=C0103
 
     def open_options(self):
         '''Open options window'''
-        self.options.show()
+        self.options_window.show()
