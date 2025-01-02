@@ -12,7 +12,7 @@ setup(
     packages=find_packages(where='src/'),
     package_data={'resources': ['themes/main/*.css', 'themes/mpipe/*.css', 'themes/metal/*.css']},
     install_requires=requirements,
-    python_requires=">=3.11",
+    python_requires=">=3.13.1",
     author='Ignacio Gonsalves',
     description='Minimal MPD client written in Python using Qt',
     license='GPL-3.0',
