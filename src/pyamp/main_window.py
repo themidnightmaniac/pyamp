@@ -488,8 +488,9 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event): # pylint: disable=invalid-name,unused-argument
         ''''Exit pyamp gracefully'''
         # Close custom command ran by user if it is still open
-        if subprocess_instance and subprocess_instance.poll() is None:
-            subprocess_instance.terminate()
+        if self.user_command:
+            if subprocess_instance and subprocess_instance.poll() is None:
+                subprocess_instance.terminate()
         # Print the number of songs played
         print("Songs played:", self.songs_played)
         # Close mpd connection
